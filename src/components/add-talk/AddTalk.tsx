@@ -54,18 +54,29 @@ function AddTalk(props: Props) {
       );
       setResourceList([...newResourceList]);
     }
+// Sets the urls
+    for (let i = 0; i < resourceList.length; i++) {
+      if (resourceList.length === 0 || resourceList === undefined) {
+       // Does nothing since n sources were added
+      } else {
+        console.log("this is the arr:" + i)
+        console.log(resourceList);
+        console.log("this is urls");
+        console.log(urls)
+        // Only adds url if it doesn't exist in the urls string already
+        if (!urls.includes(resourceList[i].url)) {
+          setUrls(urls + " " + resourceList[i].url);
+        }
 
-
+      }
+    }
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-
+    // Prevents component from rerendering and losing data inserted by the user in the form
     event.preventDefault();
-    focus();
-    focus();
-    focus();
-    focus();
-    focus();
+   
+   
     console.log("active element")
     console.log(document.activeElement)
     console.log(addTalkWindow.current)
@@ -77,26 +88,6 @@ function AddTalk(props: Props) {
       console.log("no")
     }
 
-    for (let i = 0; i < resourceList.length; i++) {
-      if (resourceList.length === 0 || resourceList === undefined) {
-        // setUrls(resourceList[i].url);
-        // need to change resource list so it doesn't enter here again. 
-        // we never updated resource list so i think it's entering everytime.
-        // didn't have time to check
-        // setResourceList([{"id":1, "url":""}]);
-      } else {
-        console.log("this is the arr:" + i)
-        console.log(resourceList);
-        console.log("this is urls");
-        console.log(urls)
-        // Only adds url if it doesn't exist in the urls string already
-        if (!urls.includes(resourceList[i].url)) {
-          setUrls(urls + " " + resourceList[i].url);
-        }
-
-
-      }
-    }
     let talkToSave: ITalk = {
       title: title,
       description: description,
@@ -175,8 +166,6 @@ function AddTalk(props: Props) {
               >+</button>
             </div>
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
-
-
           </form>
         </div>
       </div>
