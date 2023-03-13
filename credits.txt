@@ -1,2 +1,0 @@
-Isra:
--pagination for talks list, help solving queries issue in back
