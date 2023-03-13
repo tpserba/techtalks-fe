@@ -34,7 +34,7 @@ function TalkCard(props: Props, state: State) {
         <img id="img_avatar" src={img_avatar} alt="Avatar" />
         <div id="card-info" >
           <h2><b><u>{props.talkCard.title}</u></b></h2>
-          <h3>{props.talkCard.description}</h3>
+          <p>{props.talkCard.description}</p>
           <p><u><b>Author</b>: {props.talkCard.author?.authorName}</u></p>
         </div>
       </div>      

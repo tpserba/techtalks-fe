@@ -28,8 +28,12 @@ margin-bottom: -15px;
 
 .input {
     width: 20%;
+    background-color: var(--input-bg-primary);
 }
 
+#input-description{
+background-color: var(--input-bg-primary);
+}
 #resources {
           
 }
@@ -40,6 +44,11 @@ margin-bottom: -15px;
 #input-resources-btn{
     margin-left: 10px;
     width: 2rem;
+}
+
+
+#upload-img {
+    width: 10%;
 }
 
 .btn-submit:hover{

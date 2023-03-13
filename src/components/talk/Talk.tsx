@@ -31,7 +31,7 @@ function Talk(props: Props, state: State) {
     <div>
       <div id="talk-card">
         <div id="img-and-info">
-          <img id="img_avatar" src={img_avatar} alt="Avatar" />
+          <img id="img_avatar-talk" src={img_avatar} alt="Avatar" />
          
           <h2 id="talk-title"><b><u>{props.talk.title}</u></b></h2>
           <p id="talk-author"><u><b>Author</b>: {props.talk.author?.authorName}</u></p>

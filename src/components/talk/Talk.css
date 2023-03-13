@@ -6,9 +6,9 @@
     align-items: center;
 }
 
-#img_avatar {
-    height: 100px;
-    width: 100px;
+#img_avatar-talk {
+    border-radius: 15em;
+    width: 5%;        
 }
 
 #talk-card-info {

@@ -5,7 +5,7 @@ import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
 import './AddTalk.css';
 import { saveTalk } from "./AddTalkApi";
-
+import img_avatar from '../../images/img_avatar.png';
 interface Props {
 
 }
@@ -54,10 +54,10 @@ function AddTalk(props: Props) {
       );
       setResourceList([...newResourceList]);
     }
-// Sets the urls
+    // Sets the urls
     for (let i = 0; i < resourceList.length; i++) {
       if (resourceList.length === 0 || resourceList === undefined) {
-       // Does nothing since n sources were added
+        // Does nothing since n sources were added
       } else {
         console.log("this is the arr:" + i)
         console.log(resourceList);
@@ -75,12 +75,12 @@ function AddTalk(props: Props) {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form
     event.preventDefault();
-   
-   
+
+
     console.log("active element")
     console.log(document.activeElement)
     console.log(addTalkWindow.current)
-    
+
     if (document.activeElement === addTalkWindow.current) {
 
       console.log("yes")
@@ -103,19 +103,13 @@ function AddTalk(props: Props) {
     // Create author object and add it to Talk
 
   }
-  const focus = () => {
-    addTalkWindow.current!.focus();
-    addTalkWindow.current?.focus();
-  }
+
   /*
     useEffect(()=> {
       setCanClickSubmit(true);
     }, [resourceList])
   */
-  useEffect(() => {
-    focus();
-  }, [onSubmit])
-  /*<form id="form-main" onSubmit={canClickSubmit ? (event => onSubmit(event)) : (()=>{})}>*/
+
   return (
     <>
       <div id="add-talk-window" ref={addTalkWindow}>
@@ -137,6 +131,13 @@ function AddTalk(props: Props) {
             <label htmlFor="input-description" className="lbl">Description</label>
             <textarea id="input-description" name="input-description" rows={4} cols={80} maxLength={255}
               onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
+
+
+            <label htmlFor="input-description" className="lbl">Embed video url</label>
+            <textarea id="input-description" name="input-description" rows={4} cols={80} maxLength={255}
+              onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
+
+
 
             <label htmlFor="input-author" className="lbl">Author !!</label>
             <input id="input-author" className="input" type="text" name="author"
@@ -160,12 +161,13 @@ function AddTalk(props: Props) {
               })}
               <button id="input-resources-btn" type="button"
                 onClick={(event) => addResource(event)}
-                onKeyUp={() => focus()}
-                onChange={() => focus()}
-                onBlur={() => focus()}
+
               >+</button>
             </div>
+            <img  id="upload-img"src={img_avatar} />
+            <button>Upload icon</button>
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
+            
           </form>
         </div>
       </div>
