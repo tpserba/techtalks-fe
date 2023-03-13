@@ -1,0 +1,14 @@
+#main-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #282c34;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+  }
+
+
+#search-bar {
+  width: 80%;
+  height: 3em;
+}

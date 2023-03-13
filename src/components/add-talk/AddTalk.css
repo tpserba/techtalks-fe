@@ -1,0 +1,47 @@
+@Import '../../styles.css';
+
+#add-talk-window {
+    
+}
+
+#add-talk-header{
+    display: flex;
+    flex-direction: row;
+}
+#form-main{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: auto;
+    padding: 0.35em 1em;
+    width: 80%;
+    border-color: var(--neon);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 0.4rem;
+    align-items: flex-start;    
+}
+
+.lbl{
+margin-bottom: -15px;
+}
+
+.input {
+    width: 20%;
+}
+
+#resources {
+          
+}
+
+.input-resources{
+   width: 21em;
+}
+#input-resources-btn{
+    margin-left: 10px;
+    width: 2rem;
+}
+
+.btn-submit:hover{
+    color: var(--font-color-primary);
+}

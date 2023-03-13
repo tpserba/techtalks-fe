@@ -1,0 +1,9 @@
+#header-main {
+    display: flex;
+    flex-direction: column;
+    background-color: #282c34;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    cursor: pointer;
+}

@@ -1,0 +1,8 @@
+@import '../../styles.css';
+
+#ham-menu {
+  margin-left: auto;
+  color: var(--white);
+  background-color: var(--bg-primary);  
+  cursor: pointer;
+}

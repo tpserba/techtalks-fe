@@ -1,0 +1,33 @@
+#img-and-info {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#img_avatar {
+    height: 100px;
+    width: 100px;
+}
+
+#talk-card-info {
+    display: flex;
+    flex-direction: row;   
+    width: 100%;
+
+}
+
+#talk-title{
+
+}
+
+#talk-author {
+   margin-left: auto;
+  
+}
+
+
+#talk-url {
+    color: var(--neon)
+}
