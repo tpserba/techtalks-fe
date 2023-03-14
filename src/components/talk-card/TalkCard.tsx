@@ -3,9 +3,7 @@ import img_avatar from '../../images/img_avatar.png';
 import { ITalkCardCard } from '../../interface/ITalkCard';
 import './TalkCard.css';
 import '../../styles/Neon.css'
-import { Link, To, useNavigate } from 'react-router-dom';
-import { getTalk } from '../search/SearchApi';
-import { getFullTalk } from '../talk/TalkApi';
+import {To, useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import { ITalk } from '../../interface/ITalk';
 type Props = {

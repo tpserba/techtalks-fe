@@ -12,10 +12,10 @@ import { getFullTalk } from '../talk/TalkApi';
 import { hasContent } from '../../utils/utils';
 import { IAuthor } from '../../interface/IAuthor';
 import AuthorCard from '../author-card/AuthorCard';
+import { searchTalksByAuthor } from './TalkListApi';
 type Props = {
     talks: ITalk[],
-    isSearchPerformed: boolean,
-
+    isSearchPerformed: boolean,    
 };
 interface Params {
     "data"?: string
@@ -23,26 +23,29 @@ interface Params {
 function TalkList(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [authors, setAuthors] = useState<IAuthor[]>([]);
+    const [author, setAuthor] = useState<IAuthor>({});
     const [talk, setTalk] = useState<ITalk>({});
     const [showTalk, setShowTalk] = useState(false)
-
+    const navigate = useNavigate();
     const { state } = useLocation();
+    const [isHandleAuthorClicked, setIsHandleAuthorClicked] = useState<boolean>(false);
+    const [isSearchDone, setIsSearchDone] = useState<boolean>(false);
 
 
-    const search = async (searchParams: string) => {        
+    const search = async (searchParams: string) => {
         console.log("this is search params:" + searchParams);
         if (hasContent(searchParams)) {
             setTalks(await searchByTitle(searchParams));
             if (talks.length === 0) {
                 setAuthors(await searchByAuthor(searchParams));
-                if(authors.length > 0) {
+                if (authors.length > 0) {
 
                 }
             }
         } else {
             selectTalks();
         }
-       
+
 
     }
 
@@ -52,8 +55,6 @@ function TalkList(props: Props) {
     }
     // If user doesn't input anything on search bar
     // its default behaviour is to search all talks
-
-
 
     const selectTalk = async (event: React.MouseEvent<HTMLButtonElement>) => {
         const target = event.target as HTMLButtonElement;
@@ -68,10 +69,30 @@ function TalkList(props: Props) {
         setTalk(await getFullTalk(itemId));
         setShowTalk(true);
     }
-
+    const handleAuthorOnClick = async (event: React.MouseEvent<HTMLDivElement>, authorItem: IAuthor, showTheTalk: boolean) => {
+        let target = event.target as HTMLDivElement;
+        setAuthor(authorItem);
+        setTalks(await searchTalksByAuthor(authorItem.id!));        
+      
+        setIsHandleAuthorClicked(true);             
+    }
     useEffect(() => {
-        search(state.data);
-    }, []);
+        if(!isSearchDone){
+            search(state.data);
+            setIsSearchDone(true);
+        }
+        
+        if(isHandleAuthorClicked) {
+            navigate("/user-profile", {
+                state:
+                {
+                    author:author,
+                    talks:talks,
+                    something: 2
+                }
+            })
+        }
+    }, [talks]);
 
     return (
         <>
@@ -81,10 +102,12 @@ function TalkList(props: Props) {
                     <HamburgerMenu />
                 </div>
             </div>
-            <hr />
+            <hr />            
             {showTalk ?
                 <Talk talk={talk} /> : null
-            }{!showTalk && authors.length === 0 ? 
+            }
+
+            {!showTalk && authors.length === 0 ?
                 talks.map((item) => {
                     return (
                         <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item.id, true)}>
@@ -96,13 +119,13 @@ function TalkList(props: Props) {
                 :
                 authors.map((item) => {
                     return (
-                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item.id, true)}>
-                            <AuthorCard authorCard={item} />
+                        <div id="talk-card" key={item.id} onClick={(event) => handleAuthorOnClick(event, item, false)}>
+                            <AuthorCard authorItem={item} talks={talks} />
                             <br />
                         </div>
                     )
                 })
-                }
+            }
         </>
     );
 
