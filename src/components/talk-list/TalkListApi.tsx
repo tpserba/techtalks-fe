@@ -52,3 +52,15 @@ export async function getTalksIds() {
   });
   return await response.json();
 };
+
+export async function searchReq(params: string) {
+  // Can't get env vars to work...
+  let response = await fetch(BASE_TALKS_LIST_URL + "-search", {
+      "method": 'POST',
+      "body": JSON.stringify(params),
+      "headers": {
+          "Content-Type": 'application/json'
+      }
+  });
+  return await response.json();
+};

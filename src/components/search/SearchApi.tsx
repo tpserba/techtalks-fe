@@ -12,3 +12,4 @@ export async function getTalk(id: number) {
     });
     return await response.json();
 };
+

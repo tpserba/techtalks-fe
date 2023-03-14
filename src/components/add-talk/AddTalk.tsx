@@ -26,9 +26,7 @@ function AddTalk(props: Props) {
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setCounter([...counter, (counter.length + 1)]);
-
-    console.log(Array.from(Array(counter)));
+    setCounter([...counter, (counter.length + 1)]);    
   }
   const storeInputValue = (event: React.FormEvent<HTMLInputElement>, srcKey: number) => {
     //event.preventDefault();
@@ -38,9 +36,7 @@ function AddTalk(props: Props) {
       "id": srcKey,
       "url": value
     }
-    let newResourceList = [...resourceList];
-    console.log("just assigned value to newResourceList ");
-    console.log(newResourceList);
+    let newResourceList = [...resourceList];   
     let exists = newResourceList.filter((item) => item["id"] === srcKey);
     // Checks if item exists in the array alrady
     if (exists.length === 0) {
@@ -58,11 +54,7 @@ function AddTalk(props: Props) {
     for (let i = 0; i < resourceList.length; i++) {
       if (resourceList.length === 0 || resourceList === undefined) {
         // Does nothing since n sources were added
-      } else {
-        console.log("this is the arr:" + i)
-        console.log(resourceList);
-        console.log("this is urls");
-        console.log(urls)
+      } else {        
         // Only adds url if it doesn't exist in the urls string already
         if (!urls.includes(resourceList[i].url)) {
           setUrls(urls + " " + resourceList[i].url);
@@ -74,19 +66,7 @@ function AddTalk(props: Props) {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form
-    event.preventDefault();
-
-
-    console.log("active element")
-    console.log(document.activeElement)
-    console.log(addTalkWindow.current)
-
-    if (document.activeElement === addTalkWindow.current) {
-
-      console.log("yes")
-    } else {
-      console.log("no")
-    }
+    event.preventDefault();    
 
     let talkToSave: ITalk = {
       title: title,
@@ -94,21 +74,13 @@ function AddTalk(props: Props) {
       author: author,
       resources: urls
     };
-    await saveTalk(talkToSave);
-    console.log("this is the submitted talk:");
-    console.log(talkToSave);
+    await saveTalk(talkToSave);  
   }
 
   const handleAuthor = (authorName: string) => {
     // Create author object and add it to Talk
 
   }
-
-  /*
-    useEffect(()=> {
-      setCanClickSubmit(true);
-    }, [resourceList])
-  */
 
   return (
     <>

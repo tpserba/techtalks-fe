@@ -21,8 +21,7 @@ function Talk(props: Props, state: State) {
 
   useEffect(() => {
 
-    if (hasContent(props.talk.resources)) {
-      console.log(props.talk.resources);
+    if (hasContent(props.talk.resources)) {      
       setUrlsArray(props.talk.resources!.split(" "));
     }
 

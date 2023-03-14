@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Link, Route,useLocation,useNavigate } from "react-router-dom";
 import './TalkList.css'
 import '../../images/img_avatar.png';
-import { getTalk, getTalks } from './TalkListApi';
+import { getTalk, getTalks, searchReq } from './TalkListApi';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import Header from '../header/Header';
 import TalkCard from '../talk-card/TalkCard';
 import { ITalk } from '../../interface/ITalk';
 import Talk from '../talk/Talk';
 import { getFullTalk } from '../talk/TalkApi';
+import { hasContent } from '../../utils/utils';
 type Props = {
     talks: ITalk[],
-    isSearchPerformed: boolean
-};
-type State = {
+    isSearchPerformed: boolean,
 
 };
+interface Params {
+    "data"?: string
+  }
 function TalkList(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [talk, setTalk] = useState<ITalk>({});
     const [showTalk, setShowTalk] = useState(false)
     const [isSearchPerformed, setIsSearchPerformed] = React.useState<boolean>(false);
+    const { state } = useLocation();
+    
+
+    const search = async (searchParams: string) => {    
+        if(hasContent(searchParams)) {             
+          setTalks(await searchReq(searchParams));
+        }
+      
+        //navigate("/talk-list");
+      }
 
     const selectTalks = async () => {
         setTalks(await getTalks());
@@ -27,9 +40,8 @@ function TalkList(props: Props) {
     }
     // If user doesn't input anything on search bar
     // its default behaviour is to search all talks
-    useEffect(() => {
-        selectTalks()
-        setIsSearchPerformed(props.isSearchPerformed);
+    useEffect(() => {     
+       search(state.data);
     }, []);
 
 
@@ -42,8 +54,7 @@ function TalkList(props: Props) {
     }
 
     const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>, itemId: number |undefined |null,  showTheTalk: boolean) => {
-        let target = event.target as HTMLDivElement;
-        console.log(target)
+        let target = event.target as HTMLDivElement;        
         setTalk(await getFullTalk(itemId));        
         setShowTalk(true);
     }
