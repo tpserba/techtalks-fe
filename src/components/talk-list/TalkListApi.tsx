@@ -55,7 +55,19 @@ export async function getTalksIds() {
 
 export async function searchByTitle(params: string) {
   // Can't get env vars to work...
-  let response = await fetch(BASE_TALKS_LIST_URL + "-search", {
+  let response = await fetch(BASE_TALKS_LIST_URL + "-search-title", {
+      "method": 'POST',
+      "body": JSON.stringify(params),
+      "headers": {
+          "Content-Type": 'application/json'
+      }
+  });
+  return await response.json();
+};
+
+export async function searchByAuthor(params: string) {
+  // Can't get env vars to work...
+  let response = await fetch(BASE_TALKS_LIST_URL + "-search-author", {
       "method": 'POST',
       "body": JSON.stringify(params),
       "headers": {
