@@ -7,7 +7,8 @@ import './AddTalk.css';
 import { saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
-
+import { useNavigate } from 'react-router-dom';
+import { hasContent } from "../../utils/utils";
 interface Props {
 
 }
@@ -26,6 +27,7 @@ function AddTalk(props: Props) {
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
   const [readyToSave, setReadyToSave] = useState<boolean>(false);
+  const navigate = useNavigate();
   let addTalkWindow = useRef<HTMLDivElement>(null);
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,8 +77,12 @@ function AddTalk(props: Props) {
     let sources: string = "";
     if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
       resourceCount = document.querySelectorAll('[id^="input-resource"]'); //document.querySelector('[id^="input-resource-"]')!.id;  
-      for (let i = 0; i < resourceCount.length; i++) {       
-        sources+=(resourceCount[i] as HTMLInputElement).value + " ";
+      for (let i = 0; i < resourceCount.length; i++) {     
+        // Prevents from saving space (empty resource inputs)
+        if((resourceCount[i] as HTMLInputElement).value){          
+          sources+=(resourceCount[i] as HTMLInputElement).value + " ";
+        }  
+        
       }
     }
     setUrls(sources);
@@ -97,6 +103,8 @@ function AddTalk(props: Props) {
           resources: urls
         };
         await saveTalk(talkToSave);
+        alert("Talk created successfully!");
+        navigate("/");
       }
       callSave();
     }
