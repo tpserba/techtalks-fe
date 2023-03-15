@@ -6,9 +6,9 @@ import { ITalk } from '../../interface/ITalk';
 import Header from "../header/Header";
 import { useEffect, useState } from 'react';
 import { hasContent } from '../../utils/utils';
-import { Link, useLocation , useNavigate} from 'react-router-dom';
+import { useLocation , useNavigate} from 'react-router-dom';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
-
+import { searchTalksByAuthor} from '../../Apis';
 
 type Props = {
   talk: ITalk
@@ -24,24 +24,26 @@ function Talk(props: Props) {
   const [urlsArray, setUrlsArray] = useState<string[]>([]);
   const [talks, setTalks] = useState<ITalk[]>([]);
   const [params, setParams] = useState<Params>({});
+  const [talksFetched, setTalksFetched] = useState<boolean>(false);
   const { state } = useLocation();
   const navigate = useNavigate();
   let regex = /http/;
 
-
-  const handleAuthorClick = () => {
-    navigate("/user-profile/"+state.talk.author?.id, {
-    state:{
-      author:state.author,
-      talks:talks,
-  }});
+  const handleAuthorClick = async() => {     
+      navigate("/user-profile/"+state.talk.author?.id, {
+        state:{ 
+          author:state.author,
+          talks:state.talks,
+          talk:state.talk,
+      }});  
   }
   useEffect(() => {
     if (hasContent(state.talk.resources)) {
       setUrlsArray(state.talk.resources!.split(" "));
-    }
-    setTalks(state.talks)
-   
+    }     
+    
+    console.log("this is state")
+    console.log(state) 
   }, [])
   return (
     <div>

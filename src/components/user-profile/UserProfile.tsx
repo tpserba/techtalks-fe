@@ -60,7 +60,9 @@ function UserProfile(props: Props) {
 
     useEffect(() => {
         //search(state.author.id);
-        setAuthor(state.author);
+        console.log("this is state in userprofile");
+        console.log(state);
+       setAuthor(state.author);
         setTalks(state.talks);
         if (isHandleTalkClicked) {
             console.log(talk);
@@ -86,19 +88,17 @@ function UserProfile(props: Props) {
                 </div>
             </div>
             <hr />            
-            {author.authorName}
+            {state.author.authorName}
             <br />
-            {author.email}
+            {state.author.email}
             <br />
-            {author.linkedin}
+            {state.author.linkedin}
             <br />
-            <h1>Talks from {author.authorName}</h1>
+            <h1>Talks from {state.author.authorName}</h1>
             {
                 talks.map((item) => {
                     return (
-                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
-
-                            
+                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>                            
                             <TalkCard talk={item} type={"talk"} />
                         </div>
                     )

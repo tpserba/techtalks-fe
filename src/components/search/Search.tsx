@@ -8,7 +8,8 @@ import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import { ITalk } from '../../interface/ITalk';
 import Talk from '../talk/Talk';
 import { useEffect, useState } from 'react';
-import { getFullTalk } from '../../Apis';
+import { getFullTalk, searchTalksByAuthor, getTalksIds } from '../../Apis';
+
 
 type Props = {
 
@@ -24,17 +25,23 @@ function Search(props: Props, state: State) {
   const [talk, setTalk] = useState<ITalk>({});
   const [talks, setTalks] = useState<ITalk[]>([]);
   const [feelingLucky, setFeelingLucky] = useState<boolean>(false);
+  const [talksIds, setTalksIds] = useState<number[]>([]);
   const navigate = useNavigate();
   const [params, setParams] = useState<Params>({});
+  const [gotTalk, setGotTalk] = useState<boolean>(false);
+  const [gotTalkIds, setGotTalkIds] = useState<boolean>(false);
 
 
-  const selectRandomTalk = async () => {
-    //let idsArr = getTalksIds();
-    // Hardcoding array of talk id's (warning, use valid ids)
-    let idsArr = [1, 14];
+  const selectRandomTalk = async () => {  
+    // Hardcoding array of talk id's (warning, use valid ids)    
+    let randomId = talksIds[Math.floor(Math.random() * talksIds.length) + 1];
     // Fetches random id    
-    setTalk(await getFullTalk(idsArr[(Math.floor(Math.random() * idsArr.length))]));
+    console.log("random id " + randomId);
+    setTalk(await getFullTalk(randomId));
+    //setTalks(await searchTalksByAuthor(randomId));
+    setGotTalk(true);
     setFeelingLucky(true);
+
   }
   const onInputChange = () => {
     let searchBar = document.getElementById("search-bar") as HTMLInputElement;
@@ -43,40 +50,57 @@ function Search(props: Props, state: State) {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      document.getElementById("link-to-talklist")?.click();
+      handleSearchClick();
     }
   }
 
-  const handleSearchClick = () => {    
+  const handleSearchClick = () => {
     navigate("/talk-list", { state: params })
   }
 
-  useEffect(() => {
-    if (feelingLucky) {
-      console.log("felt lucky")
-           
-      navigate("/talk/" + talk.id, {state: {talk:talk}});
+  useEffect(() => {   
+    if (!gotTalkIds) {
+      const getIds = async () => {
+        setTalksIds(await getTalksIds());
+      }
+      getIds();
+      setGotTalkIds(true);
     }
-  }, [feelingLucky])
+
+    // Doesn't  get list of author's talks before the async call to get back a Talk by id is finished
+    if (gotTalk) {
+      const getIds = async () => {
+        setTalks(await searchTalksByAuthor(talk.author?.id!));
+
+      }
+      getIds();
+    }
+
+    if (feelingLucky && talks.length > 0 && Object.keys(talk).length > 0) {
+      console.log("felt lucky")
+      navigate("/talk/" + talk.id, { state: { talks: talks, talk: talk } });
+    }
+  }, [talks, talk])
   return (
-      <>
-        {<div>
-            <div id='main-content'>
-              <h1 ><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
-              <input id='search-bar' placeholder='Search by title, author name, dates, etc...'
-                onChange={() => onInputChange()}
-                onKeyDown={(event) => handleKeyDown(event)}
-                autoFocus={true} />
-              <br />
-              <div id="buttons">
-                <button className='glowing-btn' onClick={() => handleSearchClick()}><span>S<span >E</span>ARCH</span></button>
-                <button className='glowing-btn' onClick={() => selectRandomTalk()}><span>I'M <span>FEE</span>LING </span>
-                  <span >LUC<span >KY</span></span>
-                </button>
-              </div>
-            </div>
+    <>
+      {<div>
+        <button onClick={() => console.log(talk)}>CLICK ME</button>
+        <div id='main-content'>
+          <h1 ><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
+          <input id='search-bar' placeholder='Search by title, author name, dates, etc...'
+            onChange={() => onInputChange()}
+            onKeyDown={(event) => handleKeyDown(event)}
+            autoFocus={true} />
+          <br />
+          <div id="buttons">
+            <button className='glowing-btn' onClick={() => handleSearchClick()}><span>S<span >E</span>ARCH</span></button>
+            <button className='glowing-btn' onClick={() => selectRandomTalk()}><span>I'M <span>FEE</span>LING </span>
+              <span >LUC<span >KY</span></span>
+            </button>
           </div>
-        }
+        </div>
+      </div>
+      }
 
     </>
   );

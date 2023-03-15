@@ -14,10 +14,7 @@ type Props = {
 type State = {
 
 };
-function AuthorCard(props: Props, state: State) {
-  const [talk, setTalk] = useState<ITalk>();
-  const [navLink, setNavLink] = useState<To>("");
-  const navigate = useNavigate();
+function AuthorCard(props: Props, state: State) { 
   const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>) => {
    
   }

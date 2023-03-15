@@ -75,7 +75,7 @@ export async function getTalks() {
   export async function getTalksIds() {
   
     // Can't get env vars to work...
-    let response = await fetch(BASE_TALKS_LIST_URL + "s-titles", {
+    let response = await fetch(BASE_TALKS_LIST_URL + "s-ids", {
       "method": 'GET',
       "headers": {
         "Content-Type": 'application/json'
@@ -109,7 +109,7 @@ export async function getTalks() {
   };
   
   export async function searchTalksByAuthor(id: number) {  
-    let response = await fetch(BASE_TALKS_LIST_URL + "-by-author", {
+    let response = await fetch(BASE_TALKS_LIST_URL + "s-by-author", {
         "method": 'POST',
         "body": JSON.stringify(id),
         "headers": {
