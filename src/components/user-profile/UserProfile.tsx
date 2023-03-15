@@ -10,6 +10,7 @@ import { ITalk } from '../../interface/ITalk';
 
 import { IAuthor } from '../../interface/IAuthor';
 import { getFullTalk } from '../talk/TalkApi';
+import Talk from '../talk/Talk';
 type Props = {
     talks: ITalk[],
     isSearchPerformed: boolean,
@@ -69,7 +70,9 @@ function UserProfile(props: Props) {
                 </div>
             </div>
             <hr />            
-            {
+            {showTalk ?
+                <Talk talk={talk} /> 
+            :
             talks.map((item) => {
                 return (
                     <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item.id, true)}>
@@ -79,8 +82,8 @@ function UserProfile(props: Props) {
                        <br />
                        {author.linkedin}
                        <br />
-                       <h1>Talk</h1>
-
+                       <h1>Talks</h1>
+                        <TalkCard talk={item} type={"talk"}/>
                     </div>
                 )
             })

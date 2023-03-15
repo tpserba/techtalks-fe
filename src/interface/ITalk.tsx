@@ -6,5 +6,6 @@ export interface ITalk {
     description?: string | undefined | null,
     author?: IAuthor| undefined | null,
     resources?: string | undefined | null,  
+    talkDate?: Date | undefined | null,
 
   }

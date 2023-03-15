@@ -6,6 +6,8 @@ import Header from "../header/Header";
 import './AddTalk.css';
 import { saveTalk } from "./AddTalkApi";
 import img_avatar from '../../images/img_avatar.png';
+import DatePicker from 'react-datepicker';
+
 interface Props {
 
 }
@@ -22,6 +24,7 @@ function AddTalk(props: Props) {
   const [author, setAuthor] = useState<IAuthor>({});
   const [urls, setUrls] = useState<string>("");
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState(new Date());
   let addTalkWindow = useRef<HTMLDivElement>(null);
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,10 +141,12 @@ function AddTalk(props: Props) {
             </div>
             <img  id="upload-img"src={img_avatar} />
             <button>Upload icon</button>
+            <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)}/>
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
             
           </form>
         </div>
+        
       </div>
     </>
   );

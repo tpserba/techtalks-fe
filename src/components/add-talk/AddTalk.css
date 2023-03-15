@@ -1,5 +1,9 @@
 @Import '../../styles.css';
 
+body{
+    overflow: auto;
+}
+
 #add-talk-window {
     
 }
