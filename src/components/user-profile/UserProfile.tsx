@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './UserProfile.css'
 import '../../images/img_avatar.png';
-import { getTalk, getTalks} from './UserProfileApi';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import Header from '../header/Header';
 import TalkCard from '../talk-card/TalkCard';
 import { ITalk } from '../../interface/ITalk';
-
 import { IAuthor } from '../../interface/IAuthor';
-import { getFullTalk } from '../talk/TalkApi';
-import Talk from '../talk/Talk';
+import { getTalks, getTalkCard, searchTalksByAuthor, getFullTalk } from '../../Apis';
+
 type Props = {
     talks: ITalk[],
     isSearchPerformed: boolean,
@@ -23,13 +21,14 @@ function UserProfile(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [author, setAuthor] = useState<IAuthor>({});
     const [talk, setTalk] = useState<ITalk>({});
+    const [isHandleTalkClicked, setIsHandleTalkClicked] = useState<boolean>(false);
     const [showTalk, setShowTalk] = useState(false)
-
+    const navigate = useNavigate();
     const { state } = useLocation();
 
 
-    const search = async (id: number) => {            
-       // setAuthors(await searchTalkByAuthor(id));
+    const search = async (id: number) => {
+        // setAuthors(await searchTalkByAuthor(id));
     }
 
     const selectTalks = async () => {
@@ -46,20 +45,37 @@ function UserProfile(props: Props) {
 
         //setTalk(await getTalk((parseFloat(target.innerHTML)))); 
         // Passing id, hardcoded,  have to resolve how we'll retrieve it (possibly when getting all talks, bring also Id)
-        setTalk(await getTalk(1));
+        setTalk(await getTalkCard(1));
     }
 
-    const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>, itemId: number | undefined | null, showTheTalk: boolean) => {
+    const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>, talk: ITalk, showTheTalk: boolean) => {
         let target = event.target as HTMLDivElement;
-        setTalk(await getFullTalk(itemId));
-        setShowTalk(true);
+        setTalks(await searchTalksByAuthor(talk.author?.id!));
+        setTalk(await getFullTalk(talk.id));
+        setAuthor(talk.author!);
+        console.log(talk.id);
+        setIsHandleTalkClicked(true);
+
     }
 
     useEffect(() => {
         //search(state.author.id);
         setAuthor(state.author);
         setTalks(state.talks);
-    }, []);
+        if (isHandleTalkClicked) {
+            console.log(talk);
+            console.log(talks);
+            console.log(author);
+            navigate("/talk/" + talk.id, {
+                state:
+                {
+                    author: author,
+                    talks: talks,
+                    talk: talk,
+                }
+            })
+        }
+    }, [talk]);
 
     return (
         <>
@@ -70,23 +86,23 @@ function UserProfile(props: Props) {
                 </div>
             </div>
             <hr />            
-            {showTalk ?
-                <Talk talk={talk} /> 
-            :
-            talks.map((item) => {
-                return (
-                    <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item.id, true)}>
-                       {author.authorName}
-                       <br />
-                       {author.email}
-                       <br />
-                       {author.linkedin}
-                       <br />
-                       <h1>Talks</h1>
-                        <TalkCard talk={item} type={"talk"}/>
-                    </div>
-                )
-            })
+            {author.authorName}
+            <br />
+            {author.email}
+            <br />
+            {author.linkedin}
+            <br />
+            <h1>Talks from {author.authorName}</h1>
+            {
+                talks.map((item) => {
+                    return (
+                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
+
+                            
+                            <TalkCard talk={item} type={"talk"} />
+                        </div>
+                    )
+                })
             }
         </>
     );

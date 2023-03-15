@@ -30,16 +30,24 @@ function HamburgerMenu(props: Props, state: State) {
     }
   }
 
-  const navTo = () => {
-    navigate("/add-talk");
+  const navTo = (compo: string) => {
+    switch (compo) {
+      case "add":
+        navigate("/add-talk");
+        break;
+      case "home":
+        navigate("/");
+        break;
+    }
   }
 
   return (
     <div id="ham-menu">
       <div id="mySidenav" className="sidenav">
         <a href="" className="closebtn" onClick={closeNav}>&times;</a>
+        <a onClick={() => navTo("home")}>Home</a>
         <a href="#">Profile</a>
-        <a onClick={navTo}>Create Talk</a>
+        <a onClick={() => navTo("add")}>Create Talk</a>
         <a href="#">About</a>
         <a href="#">Log out</a>
       </div>

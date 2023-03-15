@@ -22,7 +22,7 @@ function App() {
         <Route path="/talk-list" element={<TalkList talks={talksArr} isSearchPerformed={false} />} />
         <Route path="/talk/:id" element={<Talk talk={{}} />} />
         <Route path="/add-talk" element={<AddTalk />} />
-        <Route path="/user-profile" element={<UserProfile talks={[]} isSearchPerformed={false} />} />
+        <Route path="/user-profile/:id" element={<UserProfile talks={[]} isSearchPerformed={false} />} />
       </Routes>
     </div>
   )

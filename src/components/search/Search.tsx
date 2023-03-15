@@ -3,14 +3,12 @@ import './Search.css'
 
 // Imports
 import { BrowserRouter as Router, Link, Route, useNavigate } from "react-router-dom";
-import { getTalk } from './SearchApi';
 import Header from '../header/Header';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import { ITalk } from '../../interface/ITalk';
 import Talk from '../talk/Talk';
-import { useState } from 'react';
-import { hasContent } from '../../utils/utils';
-
+import { useEffect, useState } from 'react';
+import { getFullTalk } from '../../Apis';
 
 type Props = {
 
@@ -26,7 +24,7 @@ function Search(props: Props, state: State) {
   const [talk, setTalk] = useState<ITalk>({});
   const [talks, setTalks] = useState<ITalk[]>([]);
   const [feelingLucky, setFeelingLucky] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   const [params, setParams] = useState<Params>({});
 
 
@@ -35,12 +33,12 @@ function Search(props: Props, state: State) {
     // Hardcoding array of talk id's (warning, use valid ids)
     let idsArr = [1, 14];
     // Fetches random id    
-    setTalk(await getTalk(idsArr[(Math.floor(Math.random() * idsArr.length))]));
+    setTalk(await getFullTalk(idsArr[(Math.floor(Math.random() * idsArr.length))]));
     setFeelingLucky(true);
   }
   const onInputChange = () => {
     let searchBar = document.getElementById("search-bar") as HTMLInputElement;
-    hasContent(searchBar.value) ? setParams({ data: searchBar.value }) : setParams({ data: searchBar.value })
+    setParams({ data: searchBar.value });
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -48,39 +46,37 @@ function Search(props: Props, state: State) {
       document.getElementById("link-to-talklist")?.click();
     }
   }
+
+  const handleSearchClick = () => {    
+    navigate("/talk-list", { state: params })
+  }
+
+  useEffect(() => {
+    if (feelingLucky) {
+      console.log("felt lucky")
+           
+      navigate("/talk/" + talk.id, {state: {talk:talk}});
+    }
+  }, [feelingLucky])
   return (
-    <>
-      {feelingLucky ? <div id="search-header">
-        <div id="talk-list-header">
-          <Header />
-          <div id="ham-menu-header">
-            <HamburgerMenu />
-          </div>
-        </div>
-      </div> : null
-      }
       <>
-        {feelingLucky ? <Talk talk={talk} />
-          : <div>
+        {<div>
             <div id='main-content'>
               <h1 ><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
               <input id='search-bar' placeholder='Search by title, author name, dates, etc...'
                 onChange={() => onInputChange()}
-                onKeyDown={(event) => handleKeyDown(event)} 
-                autoFocus={true}/>
+                onKeyDown={(event) => handleKeyDown(event)}
+                autoFocus={true} />
               <br />
               <div id="buttons">
-                <Link id="link-to-talklist" to={"/talk-list"} state={params} >
-                  <button className='glowing-btn'><span>S<span >E</span>ARCH</span></button>
-                </Link>
-                <button className='glowing-btn'><span onClick={selectRandomTalk}>I'M <span>FEE</span>LING </span>
-                  <span onClick={selectRandomTalk}>LUC<span >KY</span></span>
+                <button className='glowing-btn' onClick={() => handleSearchClick()}><span>S<span >E</span>ARCH</span></button>
+                <button className='glowing-btn' onClick={() => selectRandomTalk()}><span>I'M <span>FEE</span>LING </span>
+                  <span >LUC<span >KY</span></span>
                 </button>
               </div>
             </div>
           </div>
         }
-      </>
 
     </>
   );

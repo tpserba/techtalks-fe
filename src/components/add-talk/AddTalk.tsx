@@ -4,7 +4,7 @@ import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
 import './AddTalk.css';
-import { saveTalk } from "./AddTalkApi";
+import { saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
 

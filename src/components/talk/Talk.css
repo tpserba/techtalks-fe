@@ -1,32 +1,37 @@
+#talk-header {
+    display: flex;
+    flex-direction: row;
+}
 #img-and-info {
     display: flex;
     flex-direction: row;
-    margin-left: 1%;
     justify-content: space-around;
     align-items: center;
 }
 
 #img_avatar-talk {
     border-radius: 15em;
-    width: 5%;        
+    width: 5%;
 }
 
 #talk-card-info {
     display: flex;
-    flex-direction: row;   
+    flex-direction: row;
     width: 100%;
 
 }
 
-#talk-title{
-
-}
+#talk-title {}
 
 #talk-author {
-   margin-left: auto;
-  
+    margin-left: auto;
+    align-self: auto;
+    cursor: pointer;
 }
 
+#vid {
+    justify-content: center;
+}
 
 #talk-url {
     color: var(--neon)
