@@ -45,7 +45,7 @@ background-color: var(--input-bg-primary);
 .input-resources{
    width: 21em;
 }
-#input-resources-btn{
+#input-srcs-btn{
     margin-left: 10px;
     width: 2rem;
 }

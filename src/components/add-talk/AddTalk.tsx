@@ -25,11 +25,12 @@ function AddTalk(props: Props) {
   const [urls, setUrls] = useState<string>("");
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [readyToSave, setReadyToSave] = useState<boolean>(false);
   let addTalkWindow = useRef<HTMLDivElement>(null);
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setCounter([...counter, (counter.length + 1)]);    
+    setCounter([...counter, (counter.length + 1)]);
   }
   const storeInputValue = (event: React.FormEvent<HTMLInputElement>, srcKey: number) => {
     //event.preventDefault();
@@ -39,7 +40,7 @@ function AddTalk(props: Props) {
       "id": srcKey,
       "url": value
     }
-    let newResourceList = [...resourceList];   
+    let newResourceList = [...resourceList];
     let exists = newResourceList.filter((item) => item["id"] === srcKey);
     // Checks if item exists in the array alrady
     if (exists.length === 0) {
@@ -57,10 +58,10 @@ function AddTalk(props: Props) {
     for (let i = 0; i < resourceList.length; i++) {
       if (resourceList.length === 0 || resourceList === undefined) {
         // Does nothing since n sources were added
-      } else {        
+      } else {
         // Only adds url if it doesn't exist in the urls string already
         if (!urls.includes(resourceList[i].url)) {
-          setUrls(urls + " " + resourceList[i].url);
+          //setUrls(urls + " g" + resourceList[i].url);
         }
 
       }
@@ -70,21 +71,37 @@ function AddTalk(props: Props) {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form
     event.preventDefault();    
-
-    let talkToSave: ITalk = {
-      title: title,
-      description: description,
-      author: author,
-      resources: urls
-    };
-    await saveTalk(talkToSave);  
+    let resourceCount;
+    let sources: string = "";
+    if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
+      resourceCount = document.querySelectorAll('[id^="input-resource"]'); //document.querySelector('[id^="input-resource-"]')!.id;  
+      for (let i = 0; i < resourceCount.length; i++) {       
+        sources+=(resourceCount[i] as HTMLInputElement).value + " ";
+      }
+    }
+    setUrls(sources);
+    setReadyToSave(true);
   }
 
   const handleAuthor = (authorName: string) => {
     // Create author object and add it to Talk
 
   }
+  useEffect(() => {
+    if(readyToSave){
+      const callSave = async () => {
+        let talkToSave: ITalk = {
+          title: title,
+          description: description,
+          author: author,
+          resources: urls
+        };
+        await saveTalk(talkToSave);
+      }
+      callSave();
+    }
 
+  }, [urls])
   return (
     <>
       <div id="add-talk-window" ref={addTalkWindow}>
@@ -92,7 +109,7 @@ function AddTalk(props: Props) {
           <Header />
           <HamburgerMenu />
         </div>
-
+       
         <div>
           <form id="form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Create a Talk</h1>
@@ -134,19 +151,19 @@ function AddTalk(props: Props) {
                   </>
                 )
               })}
-              <button id="input-resources-btn" type="button"
+              <button id="input-srcs-btn" type="button"
                 onClick={(event) => addResource(event)}
 
               >+</button>
             </div>
-            <img  id="upload-img"src={img_avatar} />
+            <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)}/>
+            <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
-            
+
           </form>
         </div>
-        
+
       </div>
     </>
   );
