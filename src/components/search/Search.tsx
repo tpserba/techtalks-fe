@@ -60,25 +60,23 @@ function Search(props: Props, state: State) {
 
   useEffect(() => {   
     if (!gotTalkIds) {
-      const getIds = async () => {
+      const getAllIds = async () => {
         setTalksIds(await getTalksIds());
       }
-      getIds();
+      getAllIds();
       setGotTalkIds(true);
     }
 
     // Doesn't  get list of author's talks before the async call to get back a Talk by id is finished
     if (gotTalk) {
-      const getIds = async () => {
+      const getAllTalks = async () => {
         setTalks(await searchTalksByAuthor(talk.author?.id!));
-
       }
-      getIds();
+      getAllTalks();
     }
 
-    if (feelingLucky && talks.length > 0 && Object.keys(talk).length > 0) {
-      
-      navigate("/talk/" + talk.id, { state: { talks: talks, talk: talk } });
+    if (feelingLucky && talks.length > 0 && Object.keys(talk).length > 0) {      
+      navigate("/talk/" + talk.id, { state: { author: talk.author, talks: talks, talk: talk } });
     }
   }, [talks, talk])
   return (
