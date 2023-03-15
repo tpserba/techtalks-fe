@@ -36,7 +36,7 @@ function Search(props: Props, state: State) {
     // Hardcoding array of talk id's (warning, use valid ids)    
     let randomId = talksIds[Math.floor(Math.random() * talksIds.length) + 1];
     // Fetches random id    
-    console.log("random id " + randomId);
+    
     setTalk(await getFullTalk(randomId));
     //setTalks(await searchTalksByAuthor(randomId));
     setGotTalk(true);
@@ -77,14 +77,14 @@ function Search(props: Props, state: State) {
     }
 
     if (feelingLucky && talks.length > 0 && Object.keys(talk).length > 0) {
-      console.log("felt lucky")
+      
       navigate("/talk/" + talk.id, { state: { talks: talks, talk: talk } });
     }
   }, [talks, talk])
   return (
     <>
       {<div>
-        <button onClick={() => console.log(talk)}>CLICK ME</button>
+        
         <div id='main-content'>
           <h1 ><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
           <input id='search-bar' placeholder='Search by title, author name, dates, etc...'

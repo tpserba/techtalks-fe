@@ -60,7 +60,7 @@ function TalkList(props: Props) {
         setTalks(await searchTalksByAuthor(talk.author?.id!));  
         setTalk(await getFullTalk(talk.id));
         setAuthor(talk.author!);
-        console.log(talk.id);
+       
         setIsHandleTalkClicked(true);
        
     }
@@ -77,10 +77,7 @@ function TalkList(props: Props) {
             setIsSearchDone(true);
         }
          
-        if(isHandleTalkClicked) {
-            console.log(talk);
-            console.log(talks);
-            console.log(author);
+        if(isHandleTalkClicked) {            
             navigate("/talk/"+talk.id, {
                 state:
                 {

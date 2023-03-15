@@ -6,7 +6,7 @@ interface Props {
 }
 
 function TalkButton(props: Props) {
-  console.log(props);
+  
     return (
       <>
         <button className='search-button' onClick={props.handleClick}>{props.title}</button> 

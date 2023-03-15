@@ -53,21 +53,18 @@ function UserProfile(props: Props) {
         setTalks(await searchTalksByAuthor(talk.author?.id!));
         setTalk(await getFullTalk(talk.id));
         setAuthor(talk.author!);
-        console.log(talk.id);
+        
         setIsHandleTalkClicked(true);
 
     }
 
     useEffect(() => {
         //search(state.author.id);
-        console.log("this is state in userprofile");
-        console.log(state);
+       
        setAuthor(state.author);
         setTalks(state.talks);
         if (isHandleTalkClicked) {
-            console.log(talk);
-            console.log(talks);
-            console.log(author);
+          
             navigate("/talk/" + talk.id, {
                 state:
                 {

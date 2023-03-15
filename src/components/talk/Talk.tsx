@@ -41,9 +41,7 @@ function Talk(props: Props) {
     if (hasContent(state.talk.resources)) {
       setUrlsArray(state.talk.resources!.split(" "));
     }     
-    
-    console.log("this is state")
-    console.log(state) 
+      
   }, [])
   return (
     <div>
