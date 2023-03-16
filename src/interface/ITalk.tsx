@@ -8,5 +8,6 @@ export interface ITalk {
     resources?: string | undefined | null,  
     talkDate?: Date | undefined | null,
     vidUrl?: string |undefined | null,
+    talkIcon?: string | undefined | null,
 
   }
