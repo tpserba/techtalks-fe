@@ -1,7 +1,7 @@
 // @flow
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './HamburgerMenu.css'
-import '../../styles.css';
+import './HamburgerMenu.scss'
+import '../../styles.scss';
 import { useNavigate } from "react-router-dom";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAlignRight, faS } from '@fortawesome/free-solid-svg-icons';

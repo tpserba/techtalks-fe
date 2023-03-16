@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Link, Route, useLocation, useNavigate } from "react-router-dom";
-import './TalkList.css'
+import './TalkList.scss'
 import '../../images/img_avatar.png';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import Header from '../header/Header';

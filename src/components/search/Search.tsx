@@ -1,5 +1,5 @@
 // CSS
-import './Search.css'
+import './Search.scss'
 
 // Imports
 import { BrowserRouter as Router, Link, Route, useNavigate } from "react-router-dom";

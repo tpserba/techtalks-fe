@@ -1,7 +1,7 @@
 // @flow
 import img_avatar from '../../images/img_avatar.png';
-import './Talk.css';
-import '../../styles/Neon.css'
+import './Talk.scss';
+import '../../styles/Neon.scss'
 import { ITalk } from '../../interface/ITalk';
 import Header from "../header/Header";
 import { useEffect, useState } from 'react';

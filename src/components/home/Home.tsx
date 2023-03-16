@@ -1,7 +1,7 @@
 
-import '../../components/home/Home.css';
-import '../../styles/Neon.css';
-import '../../styles.css';
+import '../../components/home/Home.scss';
+import '../../styles/Neon.scss';
+import '../../styles.scss';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import Search from "../search/Search";
 interface Props {
@@ -10,16 +10,18 @@ interface Props {
 
 function Home(props: Props) {
 
-
   return (
     <>
       <div id="home-window">
         <div id="search-component">
-          <Search />
+          <Search />  
+        </div>
+        <div>
+        
         </div>
         <div id="ham-menu">
           <HamburgerMenu />
-        </div>
+        </div>        
       </div>
     </>
   );

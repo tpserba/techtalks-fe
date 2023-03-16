@@ -18,4 +18,7 @@
   width: 96%; 
 }
 
-
+#datepicker {
+  display: flex;
+  flex-direction: column;
+}

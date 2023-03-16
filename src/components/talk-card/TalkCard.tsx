@@ -2,8 +2,8 @@
 import img_avatar from '../../images/img_avatar.png';
 import { format }from 'date-fns';
 import { ITalkCardCard } from '../../interface/ITalkCard';
-import './TalkCard.css';
-import '../../styles/Neon.css'
+import './TalkCard.scss';
+import '../../styles/Neon.scss'
 import {To, useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import { ITalk } from '../../interface/ITalk';

@@ -1,8 +1,8 @@
 // @flow
 import img_avatar from '../../images/img_avatar.png';
 
-import './AuthorCard.css';
-import '../../styles/Neon.css'
+import './AuthorCard.scss';
+import '../../styles/Neon.scss'
 import { Link, To, useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
 import { ITalk } from '../../interface/ITalk';

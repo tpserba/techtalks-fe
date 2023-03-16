@@ -1,5 +1,5 @@
 
-import './Header.css';
+import './Header.scss';
 import { useNavigate } from "react-router-dom";
 interface Props {
 

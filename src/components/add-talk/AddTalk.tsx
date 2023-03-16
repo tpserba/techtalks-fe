@@ -3,7 +3,7 @@ import { IAuthor } from "../../interface/IAuthor";
 import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
-import './AddTalk.css';
+import './AddTalk.scss';
 import { saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
