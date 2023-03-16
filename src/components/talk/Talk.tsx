@@ -60,7 +60,7 @@ function Talk(props: Props) {
         <br />
         <h3>{props.talk.description}</h3>
         <br />
-        <iframe id="vid" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+        <iframe id="vid" width="560" height="315" src="https://grupovass-my.sharepoint.com/personal/antoniojose_pizarro_vass_es/_layouts/15/stream.aspx?id=%2Fpersonal%2Fantoniojose%5Fpizarro%5Fvass%5Fes%2FDocuments%2FRecordings%2FCertificaci%C3%B3n%20de%20Clave%20P%C3%BAblica%20%2D%20PKI%20%2D%20Sesi%C3%B3n%201%20de%203%2D20230314%5F150454%2DGrabaci%C3%B3n%20de%20la%20reuni%C3%B3n%2Emp4&ga=1" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
 
         <br />
         <br />

@@ -138,7 +138,7 @@ function AddTalk(props: Props) {
 
 
             <label htmlFor="input-description" className="lbl">Embed video url</label>
-            <textarea id="input-description" name="input-description" rows={4} cols={80} maxLength={255}
+            <textarea id="input-description" name="input-description" rows={4} cols={80} maxLength={1000}
               onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
 
 
