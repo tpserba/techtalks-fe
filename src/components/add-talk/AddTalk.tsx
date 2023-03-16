@@ -12,6 +12,7 @@ import '../../datepicker-css/datepicker.scss';
 import { registerLocale } from "react-datepicker";
 import es from 'date-fns/locale/es';
 import Select from 'react-select'
+import { hasContent } from "../../utils/utils";
 registerLocale('es', es)
 interface Props {
 
@@ -85,7 +86,11 @@ function AddTalk(props: Props) {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form
-    event.preventDefault();
+    if(!hasContent(author)){
+      console.log("No author selected")
+      return;
+    }
+    event.preventDefault();    
     let resourceCount;
     let sources: string = "";
     if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
@@ -99,7 +104,7 @@ function AddTalk(props: Props) {
       }
     }
     setUrls(sources);
-    setReadyToSave(true);
+    setReadyToSave(true);    
   }
 
   const handleAuthor = (authorName: string) => {
@@ -109,6 +114,12 @@ function AddTalk(props: Props) {
       console.log(document.getElementById("add-talk-author-select")?.nodeValue);
       setSelectedAuthor(authorName);
       handleAuthorAsyncPart(authorName);
+    } else {
+      console.log("something's wrong")
+      console.log("this is authorname")
+      console.log(authorName)
+      console.log(document.getElementById("add-talk-author-select")?.nodeValue);
+
     }
   }
   const handleAuthorAsyncPart = async (authorName: string) => {
@@ -129,6 +140,7 @@ function AddTalk(props: Props) {
     setSelectOptions(newArr);
 
     if (readyToSave) {
+      console.log("sooo yeah")
       const callSave = async () => {
         let talkToSave: ITalk = {
           title: title,
@@ -150,9 +162,14 @@ function AddTalk(props: Props) {
       }
 
     }
-  }, [urls, author, gotAuthor])
+  }, [urls, author, gotAuthor, readyToSave])
 
-
+const handleOnDateSelect = () => {
+  console.log((document.getElementById("add-talk-datepicker") as HTMLInputElement).value);
+  let storeDate =  (document.getElementById("add-talk-datepicker") as HTMLInputElement).value;
+ // let splitDate =  storeDate.split(",");
+  setTalkDate(new Date(storeDate));
+}
 
 
   // Start
@@ -225,10 +242,10 @@ function AddTalk(props: Props) {
             <DatePicker id="add-talk-datepicker"
               locale="es"
               showTimeSelect
-              dateFormat="yyyy-MM-dd,p"
+              dateFormat="yyyy-MM-dd p"
               selected={startDate}
               onChange={(date: Date) => setStartDate(date)}
-              onSelect={() => console.log((document.getElementById("add-talk-datepicker") as HTMLInputElement).value)} />
+              onSelect={() => handleOnDateSelect()} />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>
