@@ -83,6 +83,28 @@ export async function getTalks() {
     });
     return await response.json();
   };
+  export async function getAuthors() {
+  
+    // Can't get env vars to work...
+    let response = await fetch(BASE_AUTHOR_URL + "/authors", {
+      "method": 'GET',
+      "headers": {
+        "Content-Type": 'application/json'
+      }
+    });
+    return await response.json();
+  };
+
+  export async function getAuthorByEmail(params: string) {
+    // Can't get env vars to work...
+    let response = await fetch(BASE_AUTHOR_URL+ "/author-by-email/"+params, {
+        "method": 'GET',        
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    });
+    return await response.json();
+  };
   
   export async function searchByTitle(params: string) {
     // Can't get env vars to work...

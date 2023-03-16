@@ -5,6 +5,9 @@ import '../../styles.scss';
 import { useNavigate } from "react-router-dom";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faAlignRight, faS } from '@fortawesome/free-solid-svg-icons';
+import { getAuthors } from '../../Apis';
+import { useEffect, useState } from 'react';
+import { IAuthor } from '../../interface/IAuthor';
 type Props = {
 
 };
@@ -14,6 +17,8 @@ type State = {
 function HamburgerMenu(props: Props, state: State) {
   library.add(faS, faAlignRight)
   const navigate = useNavigate();
+  const [authors, setAuthors] = useState<IAuthor[]>([])
+  const [gotAuthors, setGotAuthors] = useState<boolean>(false)
   const closeNav = () => {
     let mySideNav: HTMLElement | null = document.getElementById("mySidenav");
     if (mySideNav === null) {
@@ -30,20 +35,30 @@ function HamburgerMenu(props: Props, state: State) {
     }
   }
 
-  const navTo = (compo: string) => {
+  const navTo = async (compo: string) => {
     switch (compo) {
       case "add":
-        navigate("/add-talk");
+        setAuthors(await getAuthors());
+        setGotAuthors(true);
         break;
       case "home":
         navigate("/");
         break;
-        case "profile":
-          navigate("/user-profile"+9999);
-          break;
+      case "profile":
+        navigate("/user-profile" + 9999);
+        break;
     }
   }
+  useEffect(() => {
+    if (gotAuthors) {
+      navigate("/add-talk", {
+        state: {
+          authors: authors,
+        }
+      });
+    }
 
+  }, [authors])
   return (
     <div id="ham-menu">
       <div id="mySidenav" className="sidenav">

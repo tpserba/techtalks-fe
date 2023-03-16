@@ -35,6 +35,11 @@ margin-bottom: -15px;
     background-color: var(--input-bg-primary);
 }
 
+#input-title{
+width: 20rem;
+height: 2rem;
+}
+
 #input-description{
 background-color: var(--input-bg-primary);
 }
@@ -62,4 +67,9 @@ background-color: var(--input-bg-primary);
 #add-talk-datepicker {
     
     justify-content: flex-start;
+}
+
+#add-talk-author-select{
+    color:black;
+    width: 20rem;
 }
