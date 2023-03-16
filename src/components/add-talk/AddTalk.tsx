@@ -9,6 +9,10 @@ import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 import { hasContent } from "../../utils/utils";
+import '../../datepicker-css/datepicker.scss';
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import es from 'date-fns/locale/es';
+registerLocale('es', es)
 interface Props {
 
 }
@@ -166,7 +170,10 @@ function AddTalk(props: Props) {
             </div>
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker selected={startDate} onChange={(date: Date) => setStartDate(date)} />
+            <DatePicker id="add-talk-datepicker" locale="es" showTimeSelect dateFormat="Pp"
+             selected={startDate} 
+             onChange={(date: Date) => setStartDate(date)}
+             onSelect={() => console.log((document.getElementById("add-talk-datepicker") as HTMLInputElement).value)} />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>
