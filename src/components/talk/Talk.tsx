@@ -8,8 +8,7 @@ import { useEffect, useState } from 'react';
 import { hasContent } from '../../utils/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
-import { deleteTalk, searchTalksByAuthor } from '../../Apis';
-import { resolve } from 'path';
+import { deleteTalk } from '../../Apis';
 
 type Props = {
   talk: ITalk
@@ -59,37 +58,37 @@ function Talk(props: Props) {
       </div>
       <hr />
       <div id="talk-component">
-        <div id="talk-content">
-          <div id="img-and-info">
-            <img id="img_avatar-talk" src={img_avatar} alt="Avatar" />
-            <h2 id="talk-title"><b><u>{state.talk.title}</u></b></h2>
-            <button id="talk-author" onClick={() => handleAuthorClick()}><u><b>Author</b>: {state.talk.author?.authorName}</u></button>
-          </div>
-          <hr />
-          <br />
-          <h3>{props.talk.description}</h3>
-          <br />
-          <iframe id="vid" width="560" height="315" src={state.talk.vidUrl} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
 
-          <br />
-          <br />
-          <br />
-
-
-          <hr />
-          
-
+        <div id="img-and-info">
+          <img id="img_avatar-talk" src={img_avatar} alt="Avatar" />
+          <h2 id="talk-title"><b><u>{state.talk.title}</u></b></h2>
+          <h3 id="btn-talk-author" onClick={() => handleAuthorClick()} className='faulty-letter'><b>Author</b>: {state.talk.author?.authorName}</h3>
         </div>
+        <div>
+          <hr />
+        </div>
+        <br />
+        <h3>{props.talk.description}</h3>
+        <br />
+        <div id="talk-content">
+          <iframe id="vid" width="560" height="315" src={state.talk.vidUrl} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+          <br />
+          <br />
+          <br />
+        </div>
+        <div>
+          <hr />
+        </div>
+        <br />
         <div id="btns">
-        <button id="btn-edit" className='glowing-btn'>Edit talk</button>
+          <button id="btn-edit" className='glowing-btn'>Edit talk</button>
           <button id="btn-delete" className='glowing-btn'
             onClick={() => { handleTalkDelete() }}
           >
             Delete talk </button>
-            </div>
-          <br />
-
-          <div id="resources-list">
+        </div>
+        <br />
+        <div id="resources-list">
           <h2>Resources:</h2>
           {urlsArray.map((url) => {
             return (
@@ -100,7 +99,7 @@ function Talk(props: Props) {
               </div>
             )
           })}
-          </div>
+        </div>
       </div>
     </div>
   );
