@@ -142,7 +142,16 @@ export async function getTalks() {
   };
 
 
-
+  export async function deleteTalk(id: number) {  
+    let response = await fetch(BASE_TALKS_LIST_URL + "/" + id, {
+        "method": 'DELETE',
+        "body": JSON.stringify(id),
+        "headers": {
+            "Content-Type": 'application/json'
+        }
+    });
+    return await response.json();
+  };
   
   
   

@@ -9,5 +9,6 @@ export interface ITalk {
     talkDate?: Date | undefined | null,
     vidUrl?: string |undefined | null,
     talkIcon?: string | undefined | null,
+    timezoneInfo?: string | undefined | null,
 
   }

@@ -13,6 +13,7 @@ import { registerLocale } from "react-datepicker";
 import es from 'date-fns/locale/es';
 import Select from 'react-select'
 import { hasContent } from "../../utils/utils";
+import { isDate } from "date-fns";
 registerLocale('es', es)
 interface Props {
 
@@ -34,6 +35,7 @@ function AddTalk(props: Props) {
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
   const [readyToSave, setReadyToSave] = useState<boolean>(false);
+  const [isDateSet, setIsDateSet] = useState<boolean>(false);
   const [selectedAuthor, setSelectedAuthor] = useState<string>();
   const [vidUrl, setVidUrl] = useState<string>();
   const [talkIcon, setTalkIcon] = useState<string>();
@@ -41,6 +43,7 @@ function AddTalk(props: Props) {
   const { state } = useLocation();
   const navigate = useNavigate();
   let addTalkWindow = useRef<HTMLDivElement>(null);
+  let testAuthor: IAuthor ;
   //const selectOptions = [];
   const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
 
@@ -85,52 +88,61 @@ function AddTalk(props: Props) {
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // Prevents component from rerendering and losing data inserted by the user in the form
-    if(!hasContent(author)){
-      console.log("No author selected")
+    event.preventDefault(); 
+    if(hasContent(talkDate)){
+      setIsDateSet(true);
+    }
+    // Prevents component from rerendering and losing data inserted by the user in the form    
+    if(!hasContent(author)){      
+      alert("No author selected");
+      setReadyToSave(false);
       return;
-    }
-    event.preventDefault();    
-    let resourceCount;
-    let sources: string = "";
-    if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
-      resourceCount = document.querySelectorAll('[id^="input-resource"]'); //document.querySelector('[id^="input-resource-"]')!.id;  
-      for (let i = 0; i < resourceCount.length; i++) {
-        // Prevents from saving space (empty resource inputs)
-        if ((resourceCount[i] as HTMLInputElement).value) {
-          sources += (resourceCount[i] as HTMLInputElement).value + " ";
+    } else {         
+      let resourceCount;
+      let sources: string = "";
+      if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
+        resourceCount = document.querySelectorAll('[id^="input-resource"]'); //document.querySelector('[id^="input-resource-"]')!.id;  
+        for (let i = 0; i < resourceCount.length; i++) {
+          // Prevents from saving space (empty resource inputs)
+          if ((resourceCount[i] as HTMLInputElement).value) {
+            sources += (resourceCount[i] as HTMLInputElement).value + " ";
+          }
+  
         }
-
       }
+      setUrls(sources);
+      setReadyToSave(true);
     }
-    setUrls(sources);
-    setReadyToSave(true);    
+   
+      
   }
 
   const handleAuthor = (authorName: string) => {
     if (authorName != "") {
-      console.log("this is authorname")
-      console.log(authorName)
-      console.log(document.getElementById("add-talk-author-select")?.nodeValue);
       setSelectedAuthor(authorName);
       handleAuthorAsyncPart(authorName);
-    } else {
-      console.log("something's wrong")
-      console.log("this is authorname")
-      console.log(authorName)
-      console.log(document.getElementById("add-talk-author-select")?.nodeValue);
-
-    }
+      
+    } 
   }
+
   const handleAuthorAsyncPart = async (authorName: string) => {
     let splitAuthorName = authorName.split("/");
+    // 0 is name, 1 is email which is unique
+    testAuthor = await getAuthorByEmail(splitAuthorName[1])
     setAuthor(await getAuthorByEmail(splitAuthorName[1]));
-    setGotAuthor(true);
+    setGotAuthor(true);    
   }
-  useEffect(() => {
-    console.log(state);
+
+  const handleOnDateSelect = async (event: Date) => {
+    document.getElementById("add-talk-datepicker")?.click();   
+    setTalkDate(new Date(event));      
+  }
+
+
+  useEffect(() => {       
     let authorsArr = state.authors;
     let newArr = []
+    let timezoneInfo: string = "0100";
     for (let i = 1; i < state.authors.length; i++) {
       newArr.push({
         value: authorsArr[i].authorName + "/" + authorsArr[i].email,
@@ -139,37 +151,36 @@ function AddTalk(props: Props) {
     }
     setSelectOptions(newArr);
 
-    if (readyToSave) {
-      console.log("sooo yeah")
-      const callSave = async () => {
+    if (gotAuthor && readyToSave) { //readyToSave was here before as condition   
+      //setTalkDate(new Date((document.getElementById("add-talk-datepicker") as HTMLInputElement).value));
+      if(hasContent(talkDate)){
+        if(talkDate?.toString().includes("GMT+0200")){         
+          timezoneInfo = "0200"
+        }     
+      }
+      const callSave = async () => {        
         let talkToSave: ITalk = {
           title: title,
           description: description,
           author: author,
           resources: urls,
-          talkDate: talkDate,
+          talkDate: new Date((document.getElementById("add-talk-datepicker") as HTMLInputElement).value),//talkDate,
           vidUrl: vidUrl,
           talkIcon: talkIcon,
+          timezoneInfo: timezoneInfo,
         };
-        await saveTalk(talkToSave);
+        await saveTalk(talkToSave);         
         alert("Talk created successfully!");
         navigate("/");
-      }
-      if (gotAuthor) {
-        console.log("this is author");
-        console.log(author);
-        callSave();
-      }
-
+      }     
+      callSave();
+    } else { 
+      setReadyToSave(false);
     }
+    
   }, [urls, author, gotAuthor, readyToSave])
 
-const handleOnDateSelect = () => {
-  console.log((document.getElementById("add-talk-datepicker") as HTMLInputElement).value);
-  let storeDate =  (document.getElementById("add-talk-datepicker") as HTMLInputElement).value;
- // let splitDate =  storeDate.split(",");
-  setTalkDate(new Date(storeDate));
-}
+
 
 
   // Start
@@ -179,8 +190,7 @@ const handleOnDateSelect = () => {
         <div id="add-talk-header">
           <Header />
           <HamburgerMenu />
-        </div>
-
+        </div>        
         <div>
           <form id="form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Create a Talk</h1>
@@ -240,12 +250,13 @@ const handleOnDateSelect = () => {
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
             <DatePicker id="add-talk-datepicker"
-              locale="es"
-              showTimeSelect
+              locale="es"             
+              showTimeInput
+              shouldCloseOnSelect={false}
               dateFormat="yyyy-MM-dd p"
               selected={startDate}
               onChange={(date: Date) => setStartDate(date)}
-              onSelect={() => handleOnDateSelect()} />
+              onSelect={(event) => handleOnDateSelect(event)} />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>

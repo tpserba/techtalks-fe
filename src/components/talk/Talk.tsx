@@ -6,9 +6,10 @@ import { ITalk } from '../../interface/ITalk';
 import Header from "../header/Header";
 import { useEffect, useState } from 'react';
 import { hasContent } from '../../utils/utils';
-import { useLocation , useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
-import { searchTalksByAuthor} from '../../Apis';
+import { deleteTalk, searchTalksByAuthor } from '../../Apis';
+import { resolve } from 'path';
 
 type Props = {
   talk: ITalk
@@ -26,33 +27,42 @@ function Talk(props: Props) {
   const navigate = useNavigate();
   let regex = /http/;
 
-  const handleAuthorClick = async() => {     
-      navigate("/user-profile/"+state.talk.author?.id, {
-        state:{ 
-          author:state.author,
-          talks:state.talks,
-          talk:state.talk,
-      }});  
+  const handleAuthorClick = async () => {
+    navigate("/user-profile/" + state.talk.author?.id, {
+      state: {
+        author: state.author,
+        talks: state.talks,
+        talk: state.talk,
+      }
+    });
   }
-  useEffect(() => {
-    console.log(state);
+  useEffect(() => {    
     if (hasContent(state.talk.resources)) {
       setUrlsArray(state.talk.resources!.split(" "));
-    }     
-      
+    }
+
   }, [])
+
+  const handleTalkDelete = () => {
+    if (window.confirm("Confirm delete talk?")) { // Add locale string in the future
+      deleteTalk(state.talk.id)
+      alert("Talk deleted successfully");
+      navigate("/");
+    }
+  }
+
   return (
     <div>
       <div id="talk-header">
-      <Header />
-      <HamburgerMenu />
+        <Header />
+        <HamburgerMenu />
       </div>
       <hr />
       <div id="talk-card">
         <div id="img-and-info">
           <img id="img_avatar-talk" src={img_avatar} alt="Avatar" />
-          <h2 id="talk-title"><b><u>{state.talk.title}</u></b></h2>                  
-            <p id="talk-author" onClick={() => handleAuthorClick()}><u><b>Author</b>: {state.talk.author?.authorName}</u></p>         
+          <h2 id="talk-title"><b><u>{state.talk.title}</u></b></h2>
+          <p id="talk-author" onClick={() => handleAuthorClick()}><u><b>Author</b>: {state.talk.author?.authorName}</u></p>
         </div>
         <hr />
         <br />
@@ -66,6 +76,12 @@ function Talk(props: Props) {
 
 
         <hr />
+        <button id="btn-edit" className='glowing-btn'>Edit talk</button>
+        <button id="btn-delete" className='glowing-btn'
+          onClick={() => { handleTalkDelete() }}
+        >
+          Delete talk </button>
+        <br />
         <h2>Resources:</h2>
 
         {urlsArray.map((url) => {
