@@ -78,12 +78,14 @@ function UserProfile(props: Props) {
 
     return (
         <>
-            <div id="talk-list-header">
+         <div id="talk-list-header">
                 <Header />
                 <div id="ham-menu-header">
                     <HamburgerMenu />
                 </div>
             </div>
+        <div id="user-profile-component">
+           
             <hr />            
             {state.author.authorName}
             <br />
@@ -101,6 +103,7 @@ function UserProfile(props: Props) {
                     )
                 })
             }
+            </div>
         </>
     );
 

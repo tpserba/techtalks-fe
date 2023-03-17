@@ -1,11 +1,11 @@
+/*
 body {
   display: flex;
     flex-direction: column;
-    text-align: center;    
-    width: 100%;
-    height: 100vh;  
+    text-align: center;            
     color:var(--font-color-primary);
 }
+*/
 
 #talk-list-header {
   display: flex;
@@ -26,5 +26,9 @@ body {
   font-size: 2rem;
   border: 0ch;
   cursor: pointer;
+}
+
+#talk-card {  
+
 }
 

@@ -1,45 +1,51 @@
 @import '../../styles.scss';
-
+/*
 body {
-    color: var(--font-color-primary);
+    color: var(--font-color-primary);    
 }
+*/
 
-#card {
+#talk-card-main-container {
     display: flex;
-    flex-direction: row;
-    margin: auto;    
-    width: 60%;
-   /* background-color: var(--bg-primary-light);*/
-    border-style:double;
+    flex-direction: row;    
+    margin: auto;
+    width: 50%;
+    /* background-color: var(--bg-primary-light);*/
+    border-style: double;
     border-width: 4px 4px 4px 4px;
     border-color: var(--font-color-primary);
-   /* border-radius: 10rem;*/
+    /* border-radius: 10rem;*/
     border-top-right-radius: 10rem;
     border-bottom-left-radius: 10rem;
-    flex-grow: 1;
     line-height: 0.8em;
-   /* background:linear-gradient( to bottom right,rgba(63,81,181,1) 0%, rgb(52, 20, 57) 70%); */
+    /* background:linear-gradient( to bottom right,rgba(63,81,181,1) 0%, rgb(52, 20, 57) 70%); */
     box-shadow: 1px 1px 10px var(--neon);
     cursor: pointer;
-    ;
 }
 
 
-#card-info{
+#talk-card-main {
     display: flex;
     flex-direction: column;
-    flex-grow: 2;
     align-items: flex-start;
     margin-left: 2%;
+    
+
+}
+
+#talk-card-img_avatar-container {
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+    align-items: center;
+    margin-left: 6%;
     
 }
 
 
-#img_avatar{
+#talk-card-img_avatar {
     border-radius: 15em;
-    width: 10%;  
-    align-self: center;
-    margin-left: 100px;
+    width: 100%;
+    height: 50%;
+    margin-right: 50px;
 }
-
-

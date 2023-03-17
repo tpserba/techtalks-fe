@@ -21,9 +21,9 @@ function AuthorCard(props: Props, state: State) {
   return (
     
     <div onClick={(event) => handleOnClick(event)}>      
-      <div id="card">
-        <img id="img_avatar" src={img_avatar} alt="Avatar" />
-        <div id="card-info" >
+      <div id="author-card">
+        <img id="author-img_avatar" src={img_avatar} alt="Avatar" />
+        <div id="author-card-info" >
           <h2><b><u>{props.authorItem.authorName}</u></b></h2>
           <p>{props.authorItem.email}</p>          
         </div>

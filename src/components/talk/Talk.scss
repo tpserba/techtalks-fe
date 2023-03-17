@@ -1,3 +1,7 @@
+#talk-component {
+    display: flex;
+    flex-direction: column;
+}
 #talk-header {
     display: flex;
     flex-direction: row;
@@ -25,8 +29,9 @@
 
 #talk-author {
     margin-left: auto;
-    align-self: auto;
-    cursor: pointer;
+    width: 10em;
+    height: 3em;
+    //cursor: pointer;
 }
 
 #vid {
@@ -36,11 +41,21 @@
 #talk-url {
     color: var(--neon)
 }
-
+#btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+   
+}
 #btn-edit{
-
 }
 
 #btn-delete{
-    margin-left: 10px;
+   
+}
+
+#resources-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
