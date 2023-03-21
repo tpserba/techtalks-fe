@@ -4,7 +4,7 @@ import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
 import './TalkAdd.scss';
-import { getAuthorByEmail, getAuthors, saveTalk } from '../../Apis';
+import { getAuthorByEmail, saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { registerLocale } from "react-datepicker";
 import es from 'date-fns/locale/es';
 import Select from 'react-select'
 import { hasContent } from "../../utils/utils";
-import { isDate } from "date-fns";
 registerLocale('es', es)
 interface Props {
 
@@ -73,38 +72,30 @@ function TalkAdd(props: Props) {
       );
       setResourceList([...newResourceList]);
     }
-    // Sets the urls
-    for (let i = 0; i < resourceList.length; i++) {
-      if (resourceList.length === 0 || resourceList === undefined) {
-        // Does nothing since n sources were added
-      } else {
-        // Only adds url if it doesn't exist in the urls string already
-        if (!urls.includes(resourceList[i].url)) {
-          //setUrls(urls + " g" + resourceList[i].url);
-        }
-
-      }
-    }
+  
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // Prevents component from rerendering and losing data inserted by the user in the form    
     event.preventDefault(); 
     if(hasContent(talkDate)){
       setIsDateSet(true);
     }
-    // Prevents component from rerendering and losing data inserted by the user in the form    
+    
     if(!hasContent(author)){      
       alert("No author selected");
       setReadyToSave(false);
       return;
     } else {         
-      let resourceCount;
+      let resourceCount: NodeListOf<Element>;
       let sources: string = "";
       if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
-        resourceCount = document.querySelectorAll('[id^="input-resource"]'); //document.querySelector('[id^="input-resource-"]')!.id;  
-        for (let i = 0; i < resourceCount.length; i++) {
+        resourceCount = document.querySelectorAll('[id^="input-resource"]');  
+        for (let i = 0; i < resourceCount.length; i++) {          
           // Prevents from saving space (empty resource inputs)
-          if ((resourceCount[i] as HTMLInputElement).value) {
+          if ((resourceCount[i] as HTMLInputElement).value && (resourceCount.length === 1 || i === resourceCount.length - 1)) {
+            sources += (resourceCount[i] as HTMLInputElement).value;
+          } else if ((resourceCount[i] as HTMLInputElement).value){
             sources += (resourceCount[i] as HTMLInputElement).value + " ";
           }
   

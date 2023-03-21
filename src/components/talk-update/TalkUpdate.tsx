@@ -3,8 +3,8 @@ import { IAuthor } from "../../interface/IAuthor";
 import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
-import './TalkEdit.scss';
-import { getAuthorByEmail, saveTalk } from '../../Apis';
+import './TalkUpdate.scss';
+import { getAuthorByEmail, saveTalk, updateTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ interface Source {
   "id": number,
   "url": string
 }
-function TalkEdit(props: Props) {
+function TalkUpdate(props: Props) {
   // Setup
   const [justLanded, setJustLanded] = useState<boolean>(false);
   const [counter, setCounter] = useState<number[]>([]);
@@ -30,7 +30,7 @@ function TalkEdit(props: Props) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<IAuthor>({});
-  const [gotAuthor, setGotAuthor] = useState<boolean>(false);
+  const [gotAuthor, setGotAuthor] = useState<boolean>(false);  
   const [urls, setUrls] = useState<string>("");
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -43,7 +43,7 @@ function TalkEdit(props: Props) {
   const { state } = useLocation();
   const navigate = useNavigate();
   let talkAddWindow = useRef<HTMLDivElement>(null);
-  let testAuthor: IAuthor ;
+  let testAuthor: IAuthor;
   //const selectOptions = [];
   const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
 
@@ -88,16 +88,16 @@ function TalkEdit(props: Props) {
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
-    if(hasContent(talkDate)){
+    event.preventDefault();
+    if (hasContent(talkDate)) {
       setIsDateSet(true);
     }
     // Prevents component from rerendering and losing data inserted by the user in the form    
-    if(!hasContent(author)){      
+    if (!hasContent(author)) {
       alert("No author selected");
       setReadyToSave(false);
       return;
-    } else {         
+    } else {
       let resourceCount;
       let sources: string = "";
       if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
@@ -107,22 +107,22 @@ function TalkEdit(props: Props) {
           if ((resourceCount[i] as HTMLInputElement).value) {
             sources += (resourceCount[i] as HTMLInputElement).value + " ";
           }
-  
+
         }
       }
       setUrls(sources);
       setReadyToSave(true);
     }
-   
-      
+
+
   }
 
   const handleAuthor = (authorName: string) => {
     if (authorName != "") {
       setSelectedAuthor(authorName);
       handleAuthorAsyncPart(authorName);
-      
-    } 
+
+    }
   }
 
   const handleAuthorAsyncPart = async (authorName: string) => {
@@ -130,31 +130,56 @@ function TalkEdit(props: Props) {
     // 0 is name, 1 is email which is unique
     testAuthor = await getAuthorByEmail(splitAuthorName[1])
     setAuthor(await getAuthorByEmail(splitAuthorName[1]));
-    setGotAuthor(true);    
+    setGotAuthor(true);
   }
 
   const handleOnDateSelect = async (event: Date) => {
-    document.getElementById("talk-edit-datepicker")?.click();   
-    setTalkDate(new Date(event));      
+    document.getElementById("talk-update-datepicker")?.click();
+    setTalkDate(new Date(event));
   }
 
 
-  useEffect(() => {       
-    if(!justLanded){
-      (document.getElementById("edit-input-title") as HTMLInputElement).value = state.talk.title;
-      (document.getElementById("edit-input-description") as HTMLTextAreaElement).value = state.talk.description;
-      (document.getElementById("edit-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;
-      (document.getElementById("talk-edit-author-select") as HTMLInputElement).value = state.author.authorName;
-      (document.getElementById("edit-input-description") as HTMLInputElement).value = state.talk.description;
-      (document.getElementById("edit-input-description") as HTMLInputElement).value = state.talk.description;
-      (document.getElementById("edit-input-description") as HTMLInputElement).value = state.talk.description;
+  useEffect(() => {
+    let resourcesArr = state.talk.resources.split(" ");
+    let counterContent: number[] = [];
+    let resourceListContent: Source[] = [];
+    for (let i = 0; i < resourcesArr.length; i++) {
+      counterContent.push(i);
+    }
+    setCounter(counterContent);
+    for (let i = 0; i < resourcesArr.length; i++) {
+      resourceListContent.push(
+        {
+          id: i,
+          url: resourcesArr[i]
+        }
+      )
+    }
+    setResourceList(resourceListContent);
+
     
+    // Waits until all the inputs are rendered (when the amount of selectors is equal to the number of resources in the array, it loops)
+    if (justLanded && resourcesArr.length > 0 && document.querySelectorAll('[id^="input-resource"]') === resourcesArr.length) {
+      for (let i = 0; i < resourcesArr.length; i++) {        
+        (document.getElementById("input-resource" + (i)) as HTMLInputElement).value = resourcesArr[i];
+      }
+    }
+    if (!justLanded) {
+      (document.getElementById("update-input-title") as HTMLInputElement).value = state.talk.title;
+      (document.getElementById("update-input-description") as HTMLTextAreaElement).value = state.talk.description;
+      (document.getElementById("update-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;      
+      (document.getElementById("update-input-description") as HTMLInputElement).value = state.talk.description;   
+      //(document.getElementById("update-input-icon") as HTMLInputElement).value = state.talk.description;      
+      (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toString();
       setJustLanded(true);
     }
+
+
+
     let authorsArr = state.authors;
     let newArr = []
     let timezoneInfo: string = "0100";
-    for (let i = 1; i < state.authors.length; i++) {
+    for (let i = 0; i < state.authors.length; i++) {
       newArr.push({
         value: authorsArr[i].authorName + "/" + authorsArr[i].email,
         label: authorsArr[i].authorName + "/" + authorsArr[i].email
@@ -163,33 +188,35 @@ function TalkEdit(props: Props) {
     setSelectOptions(newArr);
 
     if (gotAuthor && readyToSave) { //readyToSave was here before as condition   
-      //setTalkDate(new Date((document.getElementById("talk-edit-datepicker") as HTMLInputElement).value));
-      if(hasContent(talkDate)){
-        if(talkDate?.toString().includes("GMT+0200")){         
+      //setTalkDate(new Date((document.getElementById("talk-update-datepicker") as HTMLInputElement).value));
+      if (hasContent(talkDate)) {
+        if (talkDate?.toString().includes("GMT+0200")) {
           timezoneInfo = "0200"
-        }     
+        }
       }
-      const callSave = async () => {        
+      const callUpdate = async () => {
         let talkToSave: ITalk = {
+          id: state.talk.id,
           title: title,
           description: description,
           author: author,
           resources: urls,
-          talkDate: new Date((document.getElementById("talk-edit-datepicker") as HTMLInputElement).value),//talkDate,
+          talkDate: new Date((document.getElementById("talk-update-datepicker") as HTMLInputElement).value),//talkDate,
           vidUrl: vidUrl,
           talkIcon: talkIcon,
           timezoneInfo: timezoneInfo,
         };
-        await saveTalk(talkToSave);         
+     
+        await updateTalk(talkToSave);
         alert("Talk created successfully!");
         navigate("/");
-      }     
-      callSave();
-    } else { 
+      }
+      callUpdate();
+    } else {
       setReadyToSave(false);
     }
-    
-  }, [urls, author, gotAuthor, readyToSave])
+
+  }, [urls, author, gotAuthor, readyToSave, justLanded])
 
 
 
@@ -197,34 +224,37 @@ function TalkEdit(props: Props) {
   // Start
   return (
     <>
-      <div id="talk-edit-window" ref={talkAddWindow}>
-        <div id="talk-edit-header">
+      <div id="talk-update-window" ref={talkAddWindow}>
+        <div id="talk-update-header">
           <Header />
           <HamburgerMenu />
-        </div>        
+        </div>
+        <button onClick={() => (document.getElementById("input-resource1") as HTMLInputElement).value = "whatever"}>CLICK ME</button>
         <div>
-          <form id="edit-form-main" onSubmit={(event => onSubmit(event))}>
-            <h1>Edit Talk</h1>
-            <label id="edit-lbl-title" className="lbl" htmlFor="">Talk Title</label>
-            <input id="edit-input-title" type="text" name="title"
+          <form id="update-form-main" onSubmit={(event => onSubmit(event))}>
+            <h1>Update Talk</h1>
+            <label id="update-lbl-title" className="lbl" htmlFor="">Talk Title</label>
+            <input id="update-input-title" type="text" name="title"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
               onInput={(event) => setTitle((event.target as HTMLInputElement).value)}
             />
 
 
-            <label htmlFor="input-description" className="lbl">Description</label>
-            <textarea id="edit-input-description" name="input-description" rows={4} cols={80} maxLength={255}
+            <label htmlFor="update-input-description" className="lbl">Description</label>
+            <textarea id="update-input-description" name="input-description" rows={4} cols={80} maxLength={255}
               onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
 
 
-            <label htmlFor="edit-input-vid-url" className="lbl">Embed video url</label>
-            <textarea id="edit-input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
+            <label htmlFor="update-input-vid-url" className="lbl">Embed video url</label>
+            <textarea id="update-input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
               onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
 
 
 
-            <label htmlFor="talk-edit-author-select" className="lbl">Author</label>
-            <Select id="talk-edit-author-select" options={selectOptions}
+            <label htmlFor="talk-update-author-select" className="lbl">Author</label>
+            <Select id="talk-update-author-select"
+              inputValue=""
+              options={selectOptions}
               components={{
                 DropdownIndicator: () => null,
                 IndicatorSeparator: () => null,
@@ -239,29 +269,40 @@ function TalkEdit(props: Props) {
 
 
             <label htmlFor="input-resources" className="lbl">Resources</label>
-            <div id="edit-resources">
+            <div id="update-resources">
+              {
+                counter.map((c, index) => {
+                  let resource = "";
+                  
+                  // Checks if any input elements are created. Otherwise tries to assign to null, since the operation happens before than the creation of the input elements
+                  if(justLanded && resourceList.length > 0 && document.querySelectorAll('[id^="input-resource"]').length > 0){
+                    (document.getElementById("input-resource"+index) as HTMLInputElement).value = resourceList[index].url;                                        
+                  }            
+                  
+                  return (
+                    <>
+                      <input id={"input-resource" + index} key={index} className="input input-resources"
+                        type="text" name="resource" placeholder="Link/url"
+                        onInput={(event) => { storeInputValue(event, index) }}
+                        onChange={(event) => { storeInputValue(event, index) }}
+                        onBlur={(event) => { storeInputValue(event, index) }}                                              
+                      />
 
-              {counter.map((c, index) => {
-                return (
-                  <>
-                    <input id={"input-resource" + c} key={c} className="input input-resources"
-                      type="text" name="resource" placeholder="Link/url"
-                      onInput={(event) => { storeInputValue(event, c) }}
-                      onChange={(event) => { storeInputValue(event, c) }}
-                      onBlur={(event) => { storeInputValue(event, c) }} />
-                    <br />
-                  </>
-                )
-              })}
-              <button id="edit-input-srcs-btn" type="button"
+                      <br />
+                    </>
+                  )
+                })
+
+              }
+              <button id="update-input-srcs-btn" type="button"
                 onClick={(event) => addResource(event)}
 
               >+</button>
             </div>
-            <img id="edit-upload-img" src={img_avatar} />
+            <img id="update-upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker id="talk-edit-datepicker"
-              locale="es"             
+            <DatePicker id="talk-update-datepicker"
+              locale="es"
               showTimeInput
               shouldCloseOnSelect={false}
               dateFormat="yyyy-MM-dd p"
@@ -278,4 +319,4 @@ function TalkEdit(props: Props) {
   );
 }
 
-export default TalkEdit;
+export default TalkUpdate;

@@ -5,7 +5,7 @@ import TalkAdd from './components/talk-add/TalkAdd';
 import TalkList from './components/talk-list/TalkList';
 import Talk from './components/talk/Talk';
 import UserProfile from './components/user-profile/UserProfile';
-import TalkEdit from './components/talk-edit/TalkEdit';
+import TalkUpdate from './components/talk-update/TalkUpdate';
 
 function App() {
   const talksArr = 
@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/talk-list" element={<TalkList talks={talksArr} isSearchPerformed={false} />} />
         <Route path="/talk/:id" element={<Talk talk={{}} />} />
-        <Route path="/talk-edit/:id" element={<TalkEdit />} />
+        <Route path="/talk-update/:id" element={<TalkUpdate />} />
         <Route path="/talk-add" element={<TalkAdd />} />
         <Route path="/user-profile/:id" element={<UserProfile talks={[]} isSearchPerformed={false} />} />        
       </Routes>

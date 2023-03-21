@@ -1,14 +1,14 @@
 @Import '../../styles.scss';
 
-#talk-edit-window {
+#talk-update-window {
     
 }
 
-#talk-edit-header{
+#talk-update-header{
     display: flex;
     flex-direction: row;
 }
-#edit-form-main{
+#update-form-main{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -31,28 +31,28 @@ margin-bottom: -15px;
     background-color: var(--input-bg-primary);
 }
 
-#edit-input-title{
+#update-input-title{
 width: 20rem;
 height: 2rem;
 }
 
-#edit-input-description{
+#update-input-description{
 background-color: var(--input-bg-primary);
 }
-#edit-resources {
+#update-resources {
           
 }
 
 .input-resources{
    width: 21em;
 }
-#edit-input-srcs-btn{
+#update-input-srcs-btn{
     margin-left: 10px;
     width: 2rem;
 }
 
 
-#edit-upload-img {
+#update-upload-img {
     width: 10%;
 }
 
@@ -60,11 +60,11 @@ background-color: var(--input-bg-primary);
     color: var(--font-color-primary);
 }
 
-#talk-edit-datepicker {    
+#talk-update-datepicker {    
     justify-content: flex-start;
 }
 
-#talk-edit-author-select{
+#talk-update-author-select{
     color:black;
     width: 20rem;
 }

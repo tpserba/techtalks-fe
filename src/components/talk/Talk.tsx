@@ -53,7 +53,7 @@ function Talk(props: Props) {
 
   const onHandleEditClick = async () => {
     let authorsArr = await getAuthors();
-    navigate("/talk-edit/" + state.talk.id,
+    navigate("/talk-update/" + state.talk.id,
       {
         state: {
           author: state.author,
@@ -94,7 +94,7 @@ function Talk(props: Props) {
         </div>
         <br />
         <div id="btns">
-          <button id="btn-edit" className='glowing-btn' onClick={onHandleEditClick}>Edit talk</button>
+          <button id="btn-update" className='glowing-btn' onClick={onHandleEditClick}>Edit talk</button>
           <button id="btn-delete" className='glowing-btn'
             onClick={() => { handleTalkDelete() }}
           >

@@ -43,6 +43,18 @@ export async function saveTalk(talk: ITalk) {
     return await response.json();
 };
 
+export async function updateTalk(talk: ITalk) {
+  // Can't get env vars to work...
+  let response = await fetch(BASE_TALKS_LIST_URL + "-update", {
+      "method": 'PUT',
+      "body": JSON.stringify(talk),
+      "headers": {
+          "Content-Type": 'application/json'
+      }
+  });
+  return await response.json();
+};
+
 
 
 export async function getTalks() {
