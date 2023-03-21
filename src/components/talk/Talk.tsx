@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react';
 import { hasContent } from '../../utils/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
-import { deleteTalk } from '../../Apis';
+import { deleteTalk, getAuthors } from '../../Apis';
+import { IAuthor } from '../../interface/IAuthor';
 
 type Props = {
   talk: ITalk
@@ -21,7 +22,7 @@ interface Params {
 }
 
 function Talk(props: Props) {
-  const [urlsArray, setUrlsArray] = useState<string[]>([]);
+  const [urlsArray, setUrlsArray] = useState<string[]>([]);  
   const { state } = useLocation();
   const navigate = useNavigate();
   let regex = /http/;
@@ -50,6 +51,18 @@ function Talk(props: Props) {
     }
   }
 
+  const onHandleEditClick = async () => {
+    let authorsArr = await getAuthors();
+    navigate("/talk-edit/" + state.talk.id,
+      {
+        state: {
+          author: state.author,
+          authors: authorsArr,
+          talks: state.talks,
+          talk: state.talk,
+        }
+      })
+  }
   return (
     <div>
       <div id="talk-header">
@@ -81,7 +94,7 @@ function Talk(props: Props) {
         </div>
         <br />
         <div id="btns">
-          <button id="btn-edit" className='glowing-btn'>Edit talk</button>
+          <button id="btn-edit" className='glowing-btn' onClick={onHandleEditClick}>Edit talk</button>
           <button id="btn-delete" className='glowing-btn'
             onClick={() => { handleTalkDelete() }}
           >

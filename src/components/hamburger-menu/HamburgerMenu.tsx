@@ -51,7 +51,7 @@ function HamburgerMenu(props: Props, state: State) {
   }
   useEffect(() => {
     if (gotAuthors) {
-      navigate("/add-talk", {
+      navigate("/talk-add", {
         state: {
           authors: authors,
         }

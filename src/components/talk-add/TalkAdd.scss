@@ -4,11 +4,11 @@ body{
     overflow: auto;
 }
 
-#add-talk-window {
+#talk-addwindow {
     
 }
 
-#add-talk-header{
+#talk-add-header{
     display: flex;
     flex-direction: row;
 }
@@ -64,12 +64,11 @@ background-color: var(--input-bg-primary);
     color: var(--font-color-primary);
 }
 
-#add-talk-datepicker {
-    
+#talk-add-datepicker {    
     justify-content: flex-start;
 }
 
-#add-talk-author-select{
+#talk-add-author-select{
     color:black;
     width: 20rem;
 }

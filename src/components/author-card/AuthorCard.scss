@@ -1,7 +1,7 @@
 @import '../../styles.scss';
 
 
-#card {
+#author-card {
     display: flex;
     flex-direction: row;
     margin: auto;    
@@ -22,7 +22,7 @@
 }
 
 
-#card-info{
+#author-card-info{
     display: flex;
     flex-direction: column;
     flex-grow: 2;
@@ -32,7 +32,7 @@
 }
 
 
-#img_avatar{
+#author-img_avatar{
     border-radius: 15em;
     width: 10%;  
     align-self: center;

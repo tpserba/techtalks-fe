@@ -1,0 +1,70 @@
+@Import '../../styles.scss';
+
+#talk-edit-window {
+    
+}
+
+#talk-edit-header{
+    display: flex;
+    flex-direction: row;
+}
+#edit-form-main{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: auto;
+    padding: 0.35em 1em;
+    width: 80%;
+    border-color: var(--neon);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 0.4rem;
+    align-items: flex-start;    
+}
+
+.lbl{
+margin-bottom: -15px;
+}
+
+.input {
+    width: 20%;
+    background-color: var(--input-bg-primary);
+}
+
+#edit-input-title{
+width: 20rem;
+height: 2rem;
+}
+
+#edit-input-description{
+background-color: var(--input-bg-primary);
+}
+#edit-resources {
+          
+}
+
+.input-resources{
+   width: 21em;
+}
+#edit-input-srcs-btn{
+    margin-left: 10px;
+    width: 2rem;
+}
+
+
+#edit-upload-img {
+    width: 10%;
+}
+
+.btn-submit:hover{
+    color: var(--font-color-primary);
+}
+
+#talk-edit-datepicker {    
+    justify-content: flex-start;
+}
+
+#talk-edit-author-select{
+    color:black;
+    width: 20rem;
+}

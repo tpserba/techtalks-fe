@@ -3,7 +3,7 @@ import { IAuthor } from "../../interface/IAuthor";
 import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
-import './AddTalk.scss';
+import './TalkAdd.scss';
 import { getAuthorByEmail, getAuthors, saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
 import DatePicker from 'react-datepicker';
@@ -23,7 +23,7 @@ interface Source {
   "id": number,
   "url": string
 }
-function AddTalk(props: Props) {
+function TalkAdd(props: Props) {
   // Setup
   const [counter, setCounter] = useState<number[]>([]);
   const [resourceList, setResourceList] = useState<Source[]>([]);
@@ -42,7 +42,7 @@ function AddTalk(props: Props) {
   const [talkDate, setTalkDate] = useState<Date>();
   const { state } = useLocation();
   const navigate = useNavigate();
-  let addTalkWindow = useRef<HTMLDivElement>(null);
+  let talkAddWindow = useRef<HTMLDivElement>(null);
   let testAuthor: IAuthor ;
   //const selectOptions = [];
   const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
@@ -134,7 +134,7 @@ function AddTalk(props: Props) {
   }
 
   const handleOnDateSelect = async (event: Date) => {
-    document.getElementById("add-talk-datepicker")?.click();   
+    document.getElementById("talk-add-datepicker")?.click();   
     setTalkDate(new Date(event));      
   }
 
@@ -152,7 +152,7 @@ function AddTalk(props: Props) {
     setSelectOptions(newArr);
 
     if (gotAuthor && readyToSave) { //readyToSave was here before as condition   
-      //setTalkDate(new Date((document.getElementById("add-talk-datepicker") as HTMLInputElement).value));
+      //setTalkDate(new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
       if(hasContent(talkDate)){
         if(talkDate?.toString().includes("GMT+0200")){         
           timezoneInfo = "0200"
@@ -164,7 +164,7 @@ function AddTalk(props: Props) {
           description: description,
           author: author,
           resources: urls,
-          talkDate: new Date((document.getElementById("add-talk-datepicker") as HTMLInputElement).value),//talkDate,
+          talkDate: new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value),//talkDate,
           vidUrl: vidUrl,
           talkIcon: talkIcon,
           timezoneInfo: timezoneInfo,
@@ -186,8 +186,8 @@ function AddTalk(props: Props) {
   // Start
   return (
     <>
-      <div id="add-talk-window" ref={addTalkWindow}>
-        <div id="add-talk-header">
+      <div id="talk-add-window" ref={talkAddWindow}>
+        <div id="talk-add-header">
           <Header />
           <HamburgerMenu />
         </div>        
@@ -212,8 +212,8 @@ function AddTalk(props: Props) {
 
 
 
-            <label htmlFor="add-talk-author-select" className="lbl">Author</label>
-            <Select id="add-talk-author-select" options={selectOptions}
+            <label htmlFor="talk-add-author-select" className="lbl">Author</label>
+            <Select id="talk-add-author-select" options={selectOptions}
               components={{
                 DropdownIndicator: () => null,
                 IndicatorSeparator: () => null,
@@ -249,7 +249,7 @@ function AddTalk(props: Props) {
             </div>
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker id="add-talk-datepicker"
+            <DatePicker id="talk-add-datepicker"
               locale="es"             
               showTimeInput
               shouldCloseOnSelect={false}
@@ -267,4 +267,4 @@ function AddTalk(props: Props) {
   );
 }
 
-export default AddTalk;
+export default TalkAdd;
