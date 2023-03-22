@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, SyntheticEvent } from "react";
 import { IAuthor } from "../../interface/IAuthor";
 import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
@@ -6,14 +6,16 @@ import Header from "../header/Header";
 import './TalkAdd.scss';
 import { getAuthorByEmail, saveTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
-import DatePicker from 'react-datepicker';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../../datepicker-css/datepicker.scss';
-import { registerLocale } from "react-datepicker";
-import es from 'date-fns/locale/es';
-import Select from 'react-select'
 import { hasContent } from "../../utils/utils";
-registerLocale('es', es)
+
+/*
+state includes
+authors,
+author,
+talks,
+talk
+*/
 interface Props {
 
 }
@@ -124,9 +126,10 @@ function TalkAdd(props: Props) {
     setGotAuthor(true);    
   }
 
-  const handleOnDateSelect = async (event: Date) => {
+  const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
     document.getElementById("talk-add-datepicker")?.click();   
-    setTalkDate(new Date(event));      
+    let dateTarget = event.target as HTMLInputElement;    
+    setTalkDate(new Date(dateTarget.value));    
   }
 
 
@@ -203,18 +206,15 @@ function TalkAdd(props: Props) {
 
 
 
+            
             <label htmlFor="talk-add-author-select" className="lbl">Author</label>
-            <Select id="talk-add-author-select" options={selectOptions}
-              components={{
-                DropdownIndicator: () => null,
-                IndicatorSeparator: () => null,
+            <datalist id="talk-add-author-select">
+              {state.authors.map((authorItem: IAuthor) => {
+                return <option key= {authorItem.id?.toString()}id={authorItem.id?.toString()}>{authorItem.authorName}</option>
+              })}
 
-              }}
-              onInputChange={(event) => handleAuthor(event)}
-              onChange={(event) => handleAuthor(event!.value)}
-              onKeyDown={() => {
-
-              }} />
+            </datalist>
+            <input autoComplete="on" list="talk-uadd-author-select" />
 
 
 
@@ -240,14 +240,12 @@ function TalkAdd(props: Props) {
             </div>
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker id="talk-add-datepicker"
-              locale="es"             
-              showTimeInput
-              shouldCloseOnSelect={false}
-              dateFormat="yyyy-MM-dd p"
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              onSelect={(event) => handleOnDateSelect(event)} />
+            <label htmlFor="start">Start date:</label>
+            <input type="datetime-local" id="talk-add-datepicker" name="trip-start"             
+              min="2000-01-01" max="2100-12-31" 
+              onChange={(event) => handleOnDateSelect(event)}
+              onSelect={(event) => handleOnDateSelect(event)}
+              />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>

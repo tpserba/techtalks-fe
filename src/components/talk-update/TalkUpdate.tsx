@@ -4,16 +4,11 @@ import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
 import Header from "../header/Header";
 import './TalkUpdate.scss';
-import { getAuthorByEmail, saveTalk, updateTalk } from '../../Apis';
+import { getAuthorByEmail, updateTalk } from '../../Apis';
 import img_avatar from '../../images/img_avatar.png';
-import DatePicker from 'react-datepicker';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../../datepicker-css/datepicker.scss';
-import { registerLocale } from "react-datepicker";
-import es from 'date-fns/locale/es';
-import Select from 'react-select'
 import { hasContent } from "../../utils/utils";
-registerLocale('es', es)
+
 
 /*
 State contains
@@ -266,14 +261,13 @@ function TalkUpdate(props: Props) {
               onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
 
             <label htmlFor="talk-update-author-select" className="lbl">Author</label>
-
             <datalist id="suggestions">
               {state.authors.map((authorItem: IAuthor) => {
                 return <option id={authorItem.id?.toString()}>{authorItem.authorName}</option>
               })}
 
             </datalist>
-            <input autoComplete="on" list="suggestions" />
+            <input autoComplete="on" list="talk-update-author-select" />
 
 
             <label htmlFor="input-resources" className="lbl">Resources</label>
