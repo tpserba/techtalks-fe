@@ -27,25 +27,10 @@ interface Source {
 function TalkAdd(props: Props) {
   // Setup
   const [counter, setCounter] = useState<number[]>([]);
-  const [resourceList, setResourceList] = useState<Source[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [author, setAuthor] = useState<IAuthor>({});
-  const [gotAuthor, setGotAuthor] = useState<boolean>(false);
-  const [urls, setUrls] = useState<string>("");
-  const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [readyToSave, setReadyToSave] = useState<boolean>(false);
-  const [isDateSet, setIsDateSet] = useState<boolean>(false);
-  const [selectedAuthor, setSelectedAuthor] = useState<string>();
-  const [vidUrl, setVidUrl] = useState<string>();
-  const [talkIcon, setTalkIcon] = useState<string>();
-  const [talkDate, setTalkDate] = useState<Date>();
+  const [resourceList, setResourceList] = useState<Source[]>([]);  
   const { state } = useLocation();
   const navigate = useNavigate();
   let talkAddWindow = useRef<HTMLDivElement>(null);
-  let testAuthor: IAuthor;
-  //const selectOptions = [];
   const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,13 +65,10 @@ function TalkAdd(props: Props) {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form    
     event.preventDefault();
-    if (hasContent(talkDate)) {
-      setIsDateSet(true);
-    }
-
+   
     if (!hasContent((document.getElementById("talk-add-author-input") as HTMLInputElement).value)) {
       alert("No author selected");
-      setReadyToSave(false);
+      
       return;
     } else {
       // Makes a list of all the resource input elements and saves the strings in a string variable
@@ -103,9 +85,7 @@ function TalkAdd(props: Props) {
           }
 
         }
-      }
-      setUrls(sources);
-      setReadyToSave(true);
+      }        
 
       // Select the author from the authors array received from navigating and saved in state y comparing the email.
       let chosenAuthor: IAuthor = {};
@@ -117,9 +97,7 @@ function TalkAdd(props: Props) {
         if (state.authors[i].email === authorEmail) {          
           chosenAuthor = state.authors[i];
         }
-      }
-     //readyToSave was here before as condition   
-        //setTalkDate(new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
+      } 
        let dateObj: Date = (new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
        if(dateObj.getTimezoneOffset() === -60){
         timezoneInfo = "0100"
@@ -152,28 +130,8 @@ function TalkAdd(props: Props) {
     let dateTarget = event.target as HTMLInputElement;
     console.log("this is date")
     console.log((new Date(dateTarget.value).getTimezoneOffset()));
-    setTalkDate(new Date(dateTarget.value));
+    
   }
-
-
-  useEffect(() => {
-    let authorsArr = state.authors;
-    let newArr = []
-    
-    for (let i = 1; i < state.authors.length; i++) {
-      newArr.push({
-        value: authorsArr[i].authorName + "/" + authorsArr[i].email,
-        label: authorsArr[i].authorName + "/" + authorsArr[i].email
-      })
-    }
-    setSelectOptions(newArr);
-
-    
-
-  }, [urls, author, readyToSave])
-
-
-
 
   // Start
   return (
@@ -189,18 +147,18 @@ function TalkAdd(props: Props) {
             <label id="talk-add-lbl-title" className="lbl" htmlFor="">Talk Title</label>
             <input id="talk-add-input-title" type="text" name="title"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
-              onInput={(event) => setTitle((event.target as HTMLInputElement).value)}
+              
             />
 
 
             <label htmlFor="talk-add-input-description" className="lbl">Description</label>
             <textarea id="talk-add-input-description" name="talk-add-input-description" rows={4} cols={80} maxLength={255}
-              onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
+             />
 
 
             <label htmlFor="talk-add-input-vid-url" className="talk-add-lbl">Embed video url</label>
             <textarea id="talk-add-input-vid-url" name="talk-add-input-vid-url" rows={4} cols={80} maxLength={1000}
-              onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
+              />
 
 
 
