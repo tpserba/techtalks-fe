@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, SyntheticEvent } from "react";
 import { IAuthor } from "../../interface/IAuthor";
 import { ITalk } from "../../interface/ITalk";
 import HamburgerMenu from "../hamburger-menu/HamburgerMenu";
@@ -14,6 +14,14 @@ import es from 'date-fns/locale/es';
 import Select from 'react-select'
 import { hasContent } from "../../utils/utils";
 registerLocale('es', es)
+
+/*
+State contains
+author
+authors,
+talks,
+talk
+*/
 interface Props {
 
 }
@@ -30,7 +38,7 @@ function TalkUpdate(props: Props) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<IAuthor>({});
-  const [gotAuthor, setGotAuthor] = useState<boolean>(false);  
+  const [gotAuthor, setGotAuthor] = useState<boolean>(false);
   const [urls, setUrls] = useState<string>("");
   const [canClickSubmit, setCanClickSubmit] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
@@ -133,9 +141,11 @@ function TalkUpdate(props: Props) {
     setGotAuthor(true);
   }
 
-  const handleOnDateSelect = async (event: Date) => {
+  const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
     document.getElementById("talk-update-datepicker")?.click();
-    setTalkDate(new Date(event));
+    let dateTarget = event.target as HTMLInputElement;
+    console.log("event value" + dateTarget.value)
+    setTalkDate(new Date(dateTarget.value));
   }
 
 
@@ -157,25 +167,29 @@ function TalkUpdate(props: Props) {
     }
     setResourceList(resourceListContent);
 
-    
-    // Waits until all the inputs are rendered (when the amount of selectors is equal to the number of resources in the array, it loops)
-    if (justLanded && resourcesArr.length > 0 && document.querySelectorAll('[id^="input-resource"]') === resourcesArr.length) {
-      for (let i = 0; i < resourcesArr.length; i++) {        
+    // Fill fields when loading component
+    // Waits until all the inputs are rendered (when the amount of selectors is equal to the number of resources in the array, it loops and fills them)
+    if (!justLanded && resourcesArr.length > 0 && document.querySelectorAll('[id^="input-resource"]') === resourcesArr.length) {
+      for (let i = 0; i < resourcesArr.length; i++) {
         (document.getElementById("input-resource" + (i)) as HTMLInputElement).value = resourcesArr[i];
       }
     }
     if (!justLanded) {
       (document.getElementById("update-input-title") as HTMLInputElement).value = state.talk.title;
+      // author
       (document.getElementById("update-input-description") as HTMLTextAreaElement).value = state.talk.description;
-      (document.getElementById("update-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;      
-      (document.getElementById("update-input-description") as HTMLInputElement).value = state.talk.description;   
-      //(document.getElementById("update-input-icon") as HTMLInputElement).value = state.talk.description;      
-      (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toString();
+      // resources
+      if (hasContent(state.talk.talkDate)) {
+        (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toString();
+      }
+
+      (document.getElementById("update-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;
+      //(document.getElementById("update-input-icon") as HTMLInputElement).value = state.talk.description;     
+      // timezone info 
+
+      // Handles variable to avoid repeatig the initial data loading process
       setJustLanded(true);
     }
-
-
-
     let authorsArr = state.authors;
     let newArr = []
     let timezoneInfo: string = "0100";
@@ -194,19 +208,21 @@ function TalkUpdate(props: Props) {
           timezoneInfo = "0200"
         }
       }
+
       const callUpdate = async () => {
         let talkToSave: ITalk = {
           id: state.talk.id,
-          title: title,
-          description: description,
+          title: (document.getElementById("update-input-title") as HTMLInputElement).value,
+          description: (document.getElementById("update-input-description") as HTMLInputElement).value,
           author: author,
           resources: urls,
           talkDate: new Date((document.getElementById("talk-update-datepicker") as HTMLInputElement).value),//talkDate,
-          vidUrl: vidUrl,
+          vidUrl: (document.getElementById("update-input-vid-url") as HTMLInputElement).value,
           talkIcon: talkIcon,
           timezoneInfo: timezoneInfo,
         };
-     
+        console.log("this is talk to save")
+        console.log(talkToSave)
         await updateTalk(talkToSave);
         alert("Talk created successfully!");
         navigate("/");
@@ -249,23 +265,15 @@ function TalkUpdate(props: Props) {
             <textarea id="update-input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
               onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
 
-
-
             <label htmlFor="talk-update-author-select" className="lbl">Author</label>
-            <Select id="talk-update-author-select"
-              inputValue=""
-              options={selectOptions}
-              components={{
-                DropdownIndicator: () => null,
-                IndicatorSeparator: () => null,
 
-              }}
-              onInputChange={(event) => handleAuthor(event)}
-              onChange={(event) => handleAuthor(event!.value)}
-              onKeyDown={() => {
+            <datalist id="suggestions">
+              {state.authors.map((authorItem: IAuthor) => {
+                return <option id={authorItem.id?.toString()}>{authorItem.authorName}</option>
+              })}
 
-              }} />
-
+            </datalist>
+            <input autoComplete="on" list="suggestions" />
 
 
             <label htmlFor="input-resources" className="lbl">Resources</label>
@@ -273,19 +281,19 @@ function TalkUpdate(props: Props) {
               {
                 counter.map((c, index) => {
                   let resource = "";
-                  
+
                   // Checks if any input elements are created. Otherwise tries to assign to null, since the operation happens before than the creation of the input elements
-                  if(justLanded && resourceList.length > 0 && document.querySelectorAll('[id^="input-resource"]').length > 0){
-                    (document.getElementById("input-resource"+index) as HTMLInputElement).value = resourceList[index].url;                                        
-                  }            
-                  
+                  if (justLanded && resourceList.length > 0 && document.querySelectorAll('[id^="input-resource"]').length > 0) {
+                    (document.getElementById("input-resource" + index) as HTMLInputElement).value = resourceList[index].url;
+                  }
+
                   return (
                     <>
                       <input id={"input-resource" + index} key={index} className="input input-resources"
                         type="text" name="resource" placeholder="Link/url"
                         onInput={(event) => { storeInputValue(event, index) }}
                         onChange={(event) => { storeInputValue(event, index) }}
-                        onBlur={(event) => { storeInputValue(event, index) }}                                              
+                        onBlur={(event) => { storeInputValue(event, index) }}
                       />
 
                       <br />
@@ -299,17 +307,22 @@ function TalkUpdate(props: Props) {
 
               >+</button>
             </div>
+
             <img id="update-upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <DatePicker id="talk-update-datepicker"
-              locale="es"
-              showTimeInput
-              shouldCloseOnSelect={false}
-              dateFormat="yyyy-MM-dd p"
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              onSelect={(event) => handleOnDateSelect(event)} />
-            <input type="submit" value="Submit" className="glowing-btn btn-submit" />
+
+
+
+            <label htmlFor="start">Start date:</label>
+            <input type="datetime-local" id="talk-update-datepicker" name="trip-start"             
+              min="2000-01-01" max="2100-12-31" 
+              onChange={(event) => handleOnDateSelect(event)}
+              onSelect={(event) => handleOnDateSelect(event)}
+              />
+
+              
+           
+              <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>
         </div>
