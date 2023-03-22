@@ -170,15 +170,15 @@ function TalkUpdate(props: Props) {
       }
     }
     if (!justLanded) {
-      (document.getElementById("update-input-title") as HTMLInputElement).value = state.talk.title;
+      (document.getElementById("talk-talk-update-input-title") as HTMLInputElement).value = state.talk.title;
       // author
-      (document.getElementById("update-input-description") as HTMLTextAreaElement).value = state.talk.description;
+      (document.getElementById("talk-talk-update-input-description") as HTMLTextAreaElement).value = state.talk.description;
       // resources
       if (hasContent(state.talk.talkDate)) {
         (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toString();
       }
 
-      (document.getElementById("update-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;
+      (document.getElementById("talk-update-input-vid-url") as HTMLTextAreaElement).value = state.talk.vidUrl;
       //(document.getElementById("update-input-icon") as HTMLInputElement).value = state.talk.description;     
       // timezone info 
 
@@ -207,12 +207,12 @@ function TalkUpdate(props: Props) {
       const callUpdate = async () => {
         let talkToSave: ITalk = {
           id: state.talk.id,
-          title: (document.getElementById("update-input-title") as HTMLInputElement).value,
-          description: (document.getElementById("update-input-description") as HTMLInputElement).value,
+          title: (document.getElementById("talk-update-input-title") as HTMLInputElement).value,
+          description: (document.getElementById("talk-update-input-description") as HTMLInputElement).value,
           author: author,
           resources: urls,
           talkDate: new Date((document.getElementById("talk-update-datepicker") as HTMLInputElement).value),//talkDate,
-          vidUrl: (document.getElementById("update-input-vid-url") as HTMLInputElement).value,
+          vidUrl: (document.getElementById("talk-update-input-vid-url") as HTMLInputElement).value,
           talkIcon: talkIcon,
           timezoneInfo: timezoneInfo,
         };
@@ -242,32 +242,32 @@ function TalkUpdate(props: Props) {
         </div>
         <button onClick={() => (document.getElementById("input-resource1") as HTMLInputElement).value = "whatever"}>CLICK ME</button>
         <div>
-          <form id="update-form-main" onSubmit={(event => onSubmit(event))}>
+          <form id="talk-update-form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Update Talk</h1>
-            <label id="update-lbl-title" className="lbl" htmlFor="">Talk Title</label>
-            <input id="update-input-title" type="text" name="title"
+            <label id="talk-update-lbl-title" className="lbl" htmlFor="">Talk Title</label>
+            <input id="talk-update-input-title" type="text" name="title"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
               onInput={(event) => setTitle((event.target as HTMLInputElement).value)}
             />
 
 
-            <label htmlFor="update-input-description" className="lbl">Description</label>
-            <textarea id="update-input-description" name="input-description" rows={4} cols={80} maxLength={255}
+            <label htmlFor="talk-update-input-description" className="lbl">Description</label>
+            <textarea id="talk-update-input-description" name="input-description" rows={4} cols={80} maxLength={255}
               onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
 
 
-            <label htmlFor="update-input-vid-url" className="lbl">Embed video url</label>
-            <textarea id="update-input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
+            <label htmlFor="talk-update-input-vid-url" className="lbl">Embed video url</label>
+            <textarea id="talk-update-input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
               onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
 
-            <label htmlFor="talk-update-author-select" className="lbl">Author</label>
-            <datalist id="suggestions">
+            <label htmlFor="talk-update-author-input-list" className="lbl">Author</label>
+            <datalist id="talk-update-author-input-list">
               {state.authors.map((authorItem: IAuthor) => {
                 return <option id={authorItem.id?.toString()}>{authorItem.authorName}</option>
               })}
 
             </datalist>
-            <input autoComplete="on" list="talk-update-author-select" />
+            <input id="talk-update-author-input" autoComplete="on" list="talk-update-author-input-list" />
 
 
             <label htmlFor="input-resources" className="lbl">Resources</label>

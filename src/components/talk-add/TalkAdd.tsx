@@ -44,7 +44,7 @@ function TalkAdd(props: Props) {
   const { state } = useLocation();
   const navigate = useNavigate();
   let talkAddWindow = useRef<HTMLDivElement>(null);
-  let testAuthor: IAuthor ;
+  let testAuthor: IAuthor;
   //const selectOptions = [];
   const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
 
@@ -74,66 +74,50 @@ function TalkAdd(props: Props) {
       );
       setResourceList([...newResourceList]);
     }
-  
+
   }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Prevents component from rerendering and losing data inserted by the user in the form    
-    event.preventDefault(); 
-    if(hasContent(talkDate)){
+    event.preventDefault();
+    if (hasContent(talkDate)) {
       setIsDateSet(true);
     }
-    
-    if(!hasContent(author)){      
+
+    if (!hasContent(author)) {
       alert("No author selected");
       setReadyToSave(false);
       return;
-    } else {         
+    } else {
       let resourceCount: NodeListOf<Element>;
       let sources: string = "";
       if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
-        resourceCount = document.querySelectorAll('[id^="input-resource"]');  
-        for (let i = 0; i < resourceCount.length; i++) {          
+        resourceCount = document.querySelectorAll('[id^="input-resource"]');
+        for (let i = 0; i < resourceCount.length; i++) {
           // Prevents from saving space (empty resource inputs)
           if ((resourceCount[i] as HTMLInputElement).value && (resourceCount.length === 1 || i === resourceCount.length - 1)) {
             sources += (resourceCount[i] as HTMLInputElement).value;
-          } else if ((resourceCount[i] as HTMLInputElement).value){
+          } else if ((resourceCount[i] as HTMLInputElement).value) {
             sources += (resourceCount[i] as HTMLInputElement).value + " ";
           }
-  
+
         }
       }
       setUrls(sources);
       setReadyToSave(true);
     }
-   
-      
-  }
 
-  const handleAuthor = (authorName: string) => {
-    if (authorName != "") {
-      setSelectedAuthor(authorName);
-      handleAuthorAsyncPart(authorName);
-      
-    } 
-  }
 
-  const handleAuthorAsyncPart = async (authorName: string) => {
-    let splitAuthorName = authorName.split("/");
-    // 0 is name, 1 is email which is unique
-    testAuthor = await getAuthorByEmail(splitAuthorName[1])
-    setAuthor(await getAuthorByEmail(splitAuthorName[1]));
-    setGotAuthor(true);    
   }
 
   const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
-    document.getElementById("talk-add-datepicker")?.click();   
-    let dateTarget = event.target as HTMLInputElement;    
-    setTalkDate(new Date(dateTarget.value));    
+    document.getElementById("talk-add-datepicker")?.click();
+    let dateTarget = event.target as HTMLInputElement;
+    setTalkDate(new Date(dateTarget.value));
   }
 
 
-  useEffect(() => {       
+  useEffect(() => {
     let authorsArr = state.authors;
     let newArr = []
     let timezoneInfo: string = "0100";
@@ -147,32 +131,44 @@ function TalkAdd(props: Props) {
 
     if (gotAuthor && readyToSave) { //readyToSave was here before as condition   
       //setTalkDate(new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
-      if(hasContent(talkDate)){
-        if(talkDate?.toString().includes("GMT+0200")){         
+      if (hasContent(talkDate)) {
+        if (talkDate?.toString().includes("GMT+0200")) {
           timezoneInfo = "0200"
-        }     
+        }
       }
-      const callSave = async () => {        
+
+      // Select the author from the authors array received from navigating and saved in state y comparing the email.
+      let chosenAuthor: IAuthor = {};
+      let inputAuthorValue = (document.getElementById("talk-add-author-input") as HTMLInputElement).value;
+      // Separates email
+      let authorEmail = inputAuthorValue.split("/")[1];
+      for (let i = 0; i < state.authors.length; i++) {
+        if (state.authors[i].email === authorEmail) {        
+          console.log("should be the chosen email "  + chosenAuthor)  
+          chosenAuthor = state.authors[i];
+        }
+      }
+      const callSave = async () => {
         let talkToSave: ITalk = {
-          title: title,
+          title: (document.getElementById("talk-add-title") as HTMLInputElement).value,
           description: description,
-          author: author,
+          author: chosenAuthor,
           resources: urls,
           talkDate: new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value),//talkDate,
           vidUrl: vidUrl,
           talkIcon: talkIcon,
           timezoneInfo: timezoneInfo,
         };
-        await saveTalk(talkToSave);         
+        await saveTalk(talkToSave);
         alert("Talk created successfully!");
         navigate("/");
-      }     
+      }
       callSave();
-    } else { 
+    } else {
       setReadyToSave(false);
     }
-    
-  }, [urls, author, gotAuthor, readyToSave])
+
+  }, [urls, author, readyToSave])
 
 
 
@@ -184,12 +180,12 @@ function TalkAdd(props: Props) {
         <div id="talk-add-header">
           <Header />
           <HamburgerMenu />
-        </div>        
+        </div>
         <div>
           <form id="form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Create a Talk</h1>
             <label id="lbl-title" className="lbl" htmlFor="">Talk Title</label>
-            <input id="input-title" type="text" name="title"
+            <input id="talk-add-input-title" type="text" name="title"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
               onInput={(event) => setTitle((event.target as HTMLInputElement).value)}
             />
@@ -206,15 +202,21 @@ function TalkAdd(props: Props) {
 
 
 
-            
-            <label htmlFor="talk-add-author-select" className="lbl">Author</label>
-            <datalist id="talk-add-author-select">
+
+            <label htmlFor="talk-add-author-input-list" className="lbl">Author</label>
+            <datalist id="talk-add-author-input-list" >
               {state.authors.map((authorItem: IAuthor) => {
-                return <option key= {authorItem.id?.toString()}id={authorItem.id?.toString()}>{authorItem.authorName}</option>
+                console.log("hey")
+                return <option key={"option"+authorItem.id?.toString()} 
+                id={"option"+authorItem.id?.toString()} 
+                value={authorItem.authorName+"/"+authorItem.email}
+                 />
               })}
 
             </datalist>
-            <input autoComplete="on" list="talk-uadd-author-select" />
+            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list" 
+            onSelect={(event)=>console.log(event)}
+            />
 
 
 
@@ -241,11 +243,11 @@ function TalkAdd(props: Props) {
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
             <label htmlFor="start">Start date:</label>
-            <input type="datetime-local" id="talk-add-datepicker" name="trip-start"             
-              min="2000-01-01" max="2100-12-31" 
+            <input type="datetime-local" id="talk-add-datepicker" name="trip-start"
+              min="2000-01-01" max="2100-12-31"
               onChange={(event) => handleOnDateSelect(event)}
               onSelect={(event) => handleOnDateSelect(event)}
-              />
+            />
             <input type="submit" value="Submit" className="glowing-btn btn-submit" />
 
           </form>
