@@ -12,7 +12,7 @@ body{
     display: flex;
     flex-direction: row;
 }
-#form-main{
+#talk-add-form-main{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -40,7 +40,7 @@ width: 20rem;
 height: 2rem;
 }
 
-#input-description{
+#talk-add-input-description{
 background-color: var(--input-bg-primary);
 }
 #resources {

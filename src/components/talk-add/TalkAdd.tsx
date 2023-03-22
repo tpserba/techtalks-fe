@@ -84,11 +84,12 @@ function TalkAdd(props: Props) {
       setIsDateSet(true);
     }
 
-    if (!hasContent(author)) {
+    if (!hasContent((document.getElementById("talk-add-author-input") as HTMLInputElement).value)) {
       alert("No author selected");
       setReadyToSave(false);
       return;
     } else {
+      // Makes a list of all the resource input elements and saves the strings in a string variable
       let resourceCount: NodeListOf<Element>;
       let sources: string = "";
       if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
@@ -105,6 +106,42 @@ function TalkAdd(props: Props) {
       }
       setUrls(sources);
       setReadyToSave(true);
+
+      // Select the author from the authors array received from navigating and saved in state y comparing the email.
+      let chosenAuthor: IAuthor = {};
+      let inputAuthorValue = (document.getElementById("talk-add-author-input") as HTMLInputElement).value;
+      // Separates email
+      let authorEmail = inputAuthorValue.split("/")[1];
+      let timezoneInfo: string = "0100";
+      for (let i = 0; i < state.authors.length; i++) {
+        if (state.authors[i].email === authorEmail) {          
+          chosenAuthor = state.authors[i];
+        }
+      }
+     //readyToSave was here before as condition   
+        //setTalkDate(new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
+       let dateObj: Date = (new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
+       if(dateObj.getTimezoneOffset() === -60){
+        timezoneInfo = "0100"
+       } else if(dateObj.getTimezoneOffset() === -120) {
+        timezoneInfo = "0200"
+       }                     
+  
+        let talkToSave: ITalk = {
+          title: (document.getElementById("talk-add-input-title") as HTMLInputElement).value,
+          description: (document.getElementById("talk-add-input-description") as HTMLInputElement).value,
+          author: chosenAuthor,
+          resources: sources,
+          talkDate: new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value),//talkDate,
+          vidUrl:(document.getElementById("talk-add-input-vid-url") as HTMLInputElement).value,
+          talkIcon: "",
+          timezoneInfo: timezoneInfo,
+        };
+        await saveTalk(talkToSave);
+        alert("Talk created successfully!");
+        navigate("/");
+      console.log("this is talk to save")
+  console.log(talkToSave);
     }
 
 
@@ -113,6 +150,8 @@ function TalkAdd(props: Props) {
   const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
     document.getElementById("talk-add-datepicker")?.click();
     let dateTarget = event.target as HTMLInputElement;
+    console.log("this is date")
+    console.log((new Date(dateTarget.value).getTimezoneOffset()));
     setTalkDate(new Date(dateTarget.value));
   }
 
@@ -120,7 +159,7 @@ function TalkAdd(props: Props) {
   useEffect(() => {
     let authorsArr = state.authors;
     let newArr = []
-    let timezoneInfo: string = "0100";
+    
     for (let i = 1; i < state.authors.length; i++) {
       newArr.push({
         value: authorsArr[i].authorName + "/" + authorsArr[i].email,
@@ -129,44 +168,7 @@ function TalkAdd(props: Props) {
     }
     setSelectOptions(newArr);
 
-    if (gotAuthor && readyToSave) { //readyToSave was here before as condition   
-      //setTalkDate(new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value));
-      if (hasContent(talkDate)) {
-        if (talkDate?.toString().includes("GMT+0200")) {
-          timezoneInfo = "0200"
-        }
-      }
-
-      // Select the author from the authors array received from navigating and saved in state y comparing the email.
-      let chosenAuthor: IAuthor = {};
-      let inputAuthorValue = (document.getElementById("talk-add-author-input") as HTMLInputElement).value;
-      // Separates email
-      let authorEmail = inputAuthorValue.split("/")[1];
-      for (let i = 0; i < state.authors.length; i++) {
-        if (state.authors[i].email === authorEmail) {        
-          console.log("should be the chosen email "  + chosenAuthor)  
-          chosenAuthor = state.authors[i];
-        }
-      }
-      const callSave = async () => {
-        let talkToSave: ITalk = {
-          title: (document.getElementById("talk-add-title") as HTMLInputElement).value,
-          description: description,
-          author: chosenAuthor,
-          resources: urls,
-          talkDate: new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value),//talkDate,
-          vidUrl: vidUrl,
-          talkIcon: talkIcon,
-          timezoneInfo: timezoneInfo,
-        };
-        await saveTalk(talkToSave);
-        alert("Talk created successfully!");
-        navigate("/");
-      }
-      callSave();
-    } else {
-      setReadyToSave(false);
-    }
+    
 
   }, [urls, author, readyToSave])
 
@@ -182,22 +184,22 @@ function TalkAdd(props: Props) {
           <HamburgerMenu />
         </div>
         <div>
-          <form id="form-main" onSubmit={(event => onSubmit(event))}>
+          <form id="talk-add-form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Create a Talk</h1>
-            <label id="lbl-title" className="lbl" htmlFor="">Talk Title</label>
+            <label id="talk-add-lbl-title" className="lbl" htmlFor="">Talk Title</label>
             <input id="talk-add-input-title" type="text" name="title"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
               onInput={(event) => setTitle((event.target as HTMLInputElement).value)}
             />
 
 
-            <label htmlFor="input-description" className="lbl">Description</label>
-            <textarea id="input-description" name="input-description" rows={4} cols={80} maxLength={255}
+            <label htmlFor="talk-add-input-description" className="lbl">Description</label>
+            <textarea id="talk-add-input-description" name="talk-add-input-description" rows={4} cols={80} maxLength={255}
               onInput={(event) => setDescription((event.target as HTMLInputElement).value)} />
 
 
-            <label htmlFor="input-vid-url" className="lbl">Embed video url</label>
-            <textarea id="input-vid-url" name="input-vid-url" rows={4} cols={80} maxLength={1000}
+            <label htmlFor="talk-add-input-vid-url" className="talk-add-lbl">Embed video url</label>
+            <textarea id="talk-add-input-vid-url" name="talk-add-input-vid-url" rows={4} cols={80} maxLength={1000}
               onInput={(event) => setVidUrl((event.target as HTMLInputElement).value)} />
 
 
@@ -205,17 +207,16 @@ function TalkAdd(props: Props) {
 
             <label htmlFor="talk-add-author-input-list" className="lbl">Author</label>
             <datalist id="talk-add-author-input-list" >
-              {state.authors.map((authorItem: IAuthor) => {
-                console.log("hey")
-                return <option key={"option"+authorItem.id?.toString()} 
-                id={"option"+authorItem.id?.toString()} 
-                value={authorItem.authorName+"/"+authorItem.email}
-                 />
+              {state.authors.map((authorItem: IAuthor) => {                
+                return <option key={"option" + authorItem.id?.toString()}
+                  id={"option" + authorItem.id?.toString()}
+                  value={authorItem.authorName + "/" + authorItem.email}
+                />
               })}
 
             </datalist>
-            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list" 
-            onSelect={(event)=>console.log(event)}
+            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list"
+              onSelect={(event) => console.log(event)}
             />
 
 
@@ -245,6 +246,7 @@ function TalkAdd(props: Props) {
             <label htmlFor="start">Start date:</label>
             <input type="datetime-local" id="talk-add-datepicker" name="trip-start"
               min="2000-01-01" max="2100-12-31"
+              
               onChange={(event) => handleOnDateSelect(event)}
               onSelect={(event) => handleOnDateSelect(event)}
             />
