@@ -43,8 +43,8 @@ function TalkAdd(props: Props) {
     // Prevents component from rerendering and losing data inserted by the user in the form    
     event.preventDefault();
     let optionsList: NodeListOf<HTMLOptionElement> = document.querySelectorAll('[id^="add-option-"]');
-    let matchesAuthorName = false;  
-    for (let i = 0; i < optionsList.length; i++) {    
+    let matchesAuthorName = false;
+    for (let i = 0; i < optionsList.length; i++) {
       if (optionsList[i].value === (document.getElementById("talk-add-author-input") as HTMLInputElement).value) {
         matchesAuthorName = true;
       }
@@ -84,7 +84,7 @@ function TalkAdd(props: Props) {
           chosenAuthor = state.authors[i];
         }
       }
-      let dateToSave = new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value);      
+      let dateToSave = new Date((document.getElementById("talk-add-datepicker") as HTMLInputElement).value);
       // Checks if a date has been input         
       if (!hasContent(dateToSave)) {
         dateToSave = new Date("2002-03-02T23:12:34.001+07:05");
@@ -96,7 +96,7 @@ function TalkAdd(props: Props) {
         timezoneInfo = -120
       }
 
-     
+
       let talkToSave: ITalk = {
         title: (document.getElementById("talk-add-input-title") as HTMLInputElement).value,
         description: (document.getElementById("talk-add-input-description") as HTMLInputElement).value,
@@ -109,7 +109,7 @@ function TalkAdd(props: Props) {
       };
       await saveTalk(talkToSave);
       alert("Talk created successfully!");
-      navigate("/");     
+      navigate("/");
     }
 
 
@@ -117,8 +117,8 @@ function TalkAdd(props: Props) {
 
   const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
     document.getElementById("talk-add-datepicker")?.click();
-    
-    let dateTarget = event.target as HTMLInputElement;    
+
+    let dateTarget = event.target as HTMLInputElement;
   }
 
   // Start
@@ -161,12 +161,12 @@ function TalkAdd(props: Props) {
               })}
 
             </datalist>
-            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list"             
+            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list"
             />
 
 
 
-            <label htmlFor="input-resources" className="lbl">Resources</label>
+            <label htmlFor="input-resources" className="lbl"><u>Resources</u></label>            
             <div id="resources">
 
               {counter.map((c, index) => {
@@ -179,16 +179,18 @@ function TalkAdd(props: Props) {
                   </>
                 )
               })}
-              <button id="input-srcs-btn" type="button"
-                onClick={(event) => addResource(event)}
-
-              >+</button>
+              <div id="talk-add-add-resource-button">                
+                <button id="talk-add-input-srcs-btn" type="button"
+                  onClick={(event) => addResource(event)}
+                >Add resource +</button>
+                <label htmlFor="talk-add-add-input-srscs-btn"></label>
+              </div>
             </div>
             <img id="upload-img" src={img_avatar} />
             <button>Upload icon</button>
-            <label htmlFor="start">Start date:</label>
+            <label htmlFor="start">Date(click calendar icon):</label>
             <input type="datetime-local" id="talk-add-datepicker" name="trip-start"
-              min="2000-01-01" max="2100-12-31"              
+              min="2000-01-01" max="2100-12-31"
               onChange={(event) => handleOnDateSelect(event)}
               onSelect={(event) => handleOnDateSelect(event)}
             />

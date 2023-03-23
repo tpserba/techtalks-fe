@@ -4,8 +4,8 @@ body{
     overflow: auto;
 }
 
-#talk-addwindow {
-    
+#talk-add-window {
+   line-height: 1.9em;
 }
 
 #talk-add-header{
@@ -30,8 +30,7 @@ body{
 margin-bottom: -15px;
 }
 
-.add-input {
-    
+.add-input {    
     background-color: var(--input-bg-primary);
 }
 
@@ -47,12 +46,11 @@ background-color: var(--input-bg-primary);
           
 }
 
-.add-input-resources{
+.talk-add-add-input-resources{
    
 }
 #input-srcs-btn{
-    margin-left: 10px;
-    width: 2rem;
+   
 }
 
 

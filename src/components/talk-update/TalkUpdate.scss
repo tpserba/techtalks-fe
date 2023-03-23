@@ -1,7 +1,7 @@
 @Import '../../styles.scss';
 
 #talk-update-window {
-    
+   line-height: 1.9em;
 }
 
 #talk-update-header{
@@ -28,7 +28,7 @@ margin-bottom: -15px;
 
 .update-input {
     width: 20em;
-    background-color: var(--input-bg-primary);
+    //background-color: var(--input-bg-primary);
 }
 
 
@@ -39,7 +39,7 @@ height: 2rem;
 }
 
 #talk-update-input-description{
-background-color: var(--input-bg-primary);
+//background-color: var(--input-bg-primary);
 }
 
 
@@ -53,9 +53,8 @@ background-color: var(--input-bg-primary);
 .update-input-resources{
    
 }
-#update-input-srcs-btn{
-    margin-left: 10px;
-    width: 2rem;
+#talk-update-input-srcs-btn{    
+    
 }
 
 

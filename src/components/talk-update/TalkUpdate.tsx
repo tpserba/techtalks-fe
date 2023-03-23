@@ -52,8 +52,8 @@ function TalkUpdate(props: Props) {
     // Prevents component from rerendering and losing data inserted by the user in the form    
     event.preventDefault();
     let optionsList: NodeListOf<HTMLOptionElement> = document.querySelectorAll('[id^="update-option-"]');
-    let matchesAuthorName = false;    
-    for (let i = 0; i < optionsList.length; i++) {   
+    let matchesAuthorName = false;
+    for (let i = 0; i < optionsList.length; i++) {
       // Checks if the author in the input matches one in the list
       if (optionsList[i].value === (document.getElementById("talk-update-author-input") as HTMLInputElement).value) {
         matchesAuthorName = true;
@@ -99,7 +99,7 @@ function TalkUpdate(props: Props) {
       if (!hasContent(dateToSave)) {
         dateToSave = new Date("2023-01-01T00:00");
       }
-      let dateObj: Date = dateToSave; 
+      let dateObj: Date = dateToSave;
       if (dateObj.getTimezoneOffset() === -60) {
         timezoneInfo = -60
       } else if (dateObj.getTimezoneOffset() === -120) {
@@ -120,7 +120,7 @@ function TalkUpdate(props: Props) {
       };
       await updateTalk(talkToSave);
       alert("Talk updated successfully!");
-      navigate("/");     
+      navigate("/");
     }
 
 
@@ -130,36 +130,36 @@ function TalkUpdate(props: Props) {
 
   const handleOnDateSelect = async (event: SyntheticEvent<HTMLInputElement, Event>) => {
     document.getElementById("talk-update-datepicker")?.click();
-    let dateTarget = event.target as HTMLInputElement;    
+    let dateTarget = event.target as HTMLInputElement;
     //setTalkDate(new Date(dateTarget.value));
   }
 
 
   useEffect(() => {
-    let adjustedTime: Date;   
+    let adjustedTime: Date;
     // check if null
     (document.getElementById("talk-update-input-title") as HTMLInputElement).value = state.talk.title;
     (document.getElementById("talk-update-input-description") as HTMLInputElement).value = state.talk.description;
-    (document.getElementById("talk-update-author-input") as HTMLInputElement).value = state.author.authorName+"/"+state.author.email;    
+    (document.getElementById("talk-update-author-input") as HTMLInputElement).value = state.author.authorName + "/" + state.author.email;
     //resources: sources,
-    if(parseInt(state.talk.timezoneInfo) === -60){
-      adjustedTime = new Date( state.talk.talkDate);
-      adjustedTime.setHours(adjustedTime.getHours()+1);
-      state.talk.talkDate = new Date(adjustedTime);  
+    if (parseInt(state.talk.timezoneInfo) === -60) {
+      adjustedTime = new Date(state.talk.talkDate);
+      adjustedTime.setHours(adjustedTime.getHours() + 1);
+      state.talk.talkDate = new Date(adjustedTime);
 
-    } else if (parseInt(state.talk.timezoneInfo) === -120){
-      adjustedTime = new Date( state.talk.talkDate);
-      adjustedTime.setHours(adjustedTime.getHours()+2);
-      state.talk.talkDate = new Date(adjustedTime);  
-    }    
-       
-    (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toISOString().substring(0,10)+ "T"+ state.talk.talkDate.toISOString().substring(11,16);
+    } else if (parseInt(state.talk.timezoneInfo) === -120) {
+      adjustedTime = new Date(state.talk.talkDate);
+      adjustedTime.setHours(adjustedTime.getHours() + 2);
+      state.talk.talkDate = new Date(adjustedTime);
+    }
+
+    (document.getElementById("talk-update-datepicker") as HTMLInputElement).value = state.talk.talkDate.toISOString().substring(0, 10) + "T" + state.talk.talkDate.toISOString().substring(11, 16);
     (document.getElementById("talk-update-input-vid-url") as HTMLInputElement).value = state.talk.vidUrl;
     (document.getElementById("update-upload-img") as HTMLInputElement).value = "";
     //timezoneInfo: timezoneInfo,    
     setCounter(state.resources);
-   
-   
+
+
   }, [])
 
 
@@ -172,7 +172,7 @@ function TalkUpdate(props: Props) {
         <div id="talk-update-header">
           <Header />
           <HamburgerMenu />
-        </div>        
+        </div>
         <div>
           <form id="talk-update-form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Update Talk</h1>
@@ -195,12 +195,12 @@ function TalkUpdate(props: Props) {
             <label htmlFor="talk-update-author-input-list" className="lbl">Author</label>
             <datalist id="talk-update-author-input-list">
               {state.authors.map((authorItem: IAuthor) => {
-                return <option id={"update-option-"+authorItem.id?.toString()}>{authorItem.authorName+"/"+authorItem.email}</option>
+                return <option id={"update-option-" + authorItem.id?.toString()}>{authorItem.authorName + "/" + authorItem.email}</option>
               })}
 
             </datalist>
             <input id="talk-update-author-input" autoComplete="on" list="talk-update-author-input-list" />
-            
+
             <label htmlFor="update-input-resources" className="lbl">Resources</label>
             <div id="update-resources">
               {
@@ -218,17 +218,18 @@ function TalkUpdate(props: Props) {
                 })
               }
             </div>
-            <button id="update-input-srcs-btn" type="button"
-              onClick={(event) => addResource(event)}
-
-            >+</button>
+            <div id="talk-update-add-resource-button">              
+              <button id="talk-update-input-srcs-btn" type="button"
+                onClick={(event) => addResource(event)}
+              >Add resource +</button>
+              <label htmlFor="talk-update-input-srscs-btn"></label>
+            </div>
 
             <img id="update-upload-img" src={img_avatar} alt="Picture about the subject of the Talk" title="Picture about the subject of the Talk" />
             <button>Upload icon</button>
 
 
-
-            <label htmlFor="start">Start date:</label>
+            <label htmlFor="start">Date(click calendar icon):</label>
             <input type="datetime-local" id="talk-update-datepicker" name="trip-start"
               min="2000-01-01" max="2100-12-31"
               onChange={(event) => handleOnDateSelect(event)}
