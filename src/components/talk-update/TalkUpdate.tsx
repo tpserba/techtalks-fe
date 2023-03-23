@@ -172,8 +172,7 @@ function TalkUpdate(props: Props) {
         <div id="talk-update-header">
           <Header />
           <HamburgerMenu />
-        </div>
-        <button onClick={() => (document.getElementById("input-resource1") as HTMLInputElement).value = "whatever"}>CLICK ME</button>
+        </div>        
         <div>
           <form id="talk-update-form-main" onSubmit={(event => onSubmit(event))}>
             <h1>Update Talk</h1>
