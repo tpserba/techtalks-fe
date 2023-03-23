@@ -1,6 +1,6 @@
 export function hasContent(thing: any): boolean {
     let is = false;    
-    if(typeof thing === 'object' && thing !== null && thing !== undefined) {
+    if(typeof thing === 'object' && (thing !== null && thing !== undefined)) {
         is = true;
         if(Object.keys(thing).length === 0) {
             is = false;
@@ -13,5 +13,9 @@ export function hasContent(thing: any): boolean {
     if (typeof thing === 'string' && thing) {
         is = true;
     }   
+    if(Object.prototype.toString.call(thing) === '[object Date]'){
+        is = true;
+
+    }
     return is;
 }

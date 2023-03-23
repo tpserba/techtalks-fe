@@ -53,6 +53,8 @@ function Talk(props: Props) {
 
   const onHandleEditClick = async () => {
     let authorsArr = await getAuthors();
+    let resourcesArr = state.talk.resources.split(" ");
+    if(resourcesArr.length > 1) resourcesArr.pop();
     navigate("/talk-update/" + state.talk.id,
       {
         state: {
@@ -60,6 +62,8 @@ function Talk(props: Props) {
           authors: authorsArr,
           talks: state.talks,
           talk: state.talk,
+          resources: resourcesArr,
+          
         }
       })
   }
