@@ -27,9 +27,11 @@ margin-bottom: -15px;
 }
 
 .update-input {
-    
+    width: 20em;
     background-color: var(--input-bg-primary);
 }
+
+
 
 #talk-update-input-title{
 width: 20rem;
@@ -38,6 +40,11 @@ height: 2rem;
 
 #talk-update-input-description{
 background-color: var(--input-bg-primary);
+}
+
+
+#talk-update-author-input{
+    width: 20em;
 }
 #update-resources {
           
@@ -68,3 +75,4 @@ background-color: var(--input-bg-primary);
     color:black;
     width: 20rem;
 }
+

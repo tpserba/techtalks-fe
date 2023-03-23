@@ -72,7 +72,8 @@ function TalkUpdate(props: Props) {
       if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
         resourceCount = document.querySelectorAll('[id^="input-resource"]');
         for (let i = 0; i < resourceCount.length; i++) {
-          // Prevents from saving space (empty resource inputs)
+          // Checks if the array consists of only 1 element or if i is in the last position, in both cases the last element of the array would be blank space,
+          // so it avoids concatenating it
           if ((resourceCount[i] as HTMLInputElement).value && (resourceCount.length === 1 || i === resourceCount.length - 1)) {
             sources += (resourceCount[i] as HTMLInputElement).value;
           } else if ((resourceCount[i] as HTMLInputElement).value) {

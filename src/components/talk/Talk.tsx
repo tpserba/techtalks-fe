@@ -53,8 +53,7 @@ function Talk(props: Props) {
 
   const onHandleEditClick = async () => {
     let authorsArr = await getAuthors();
-    let resourcesArr = state.talk.resources.split(" ");
-    if(resourcesArr.length > 1) resourcesArr.pop();
+    let resourcesArr = state.talk.resources.split(" ");   
     navigate("/talk-update/" + state.talk.id,
       {
         state: {
