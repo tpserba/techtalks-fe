@@ -69,8 +69,8 @@ function TalkUpdate(props: Props) {
       // Makes a list of all the resource input elements and saves the strings in a string variable
       let resourceCount: NodeListOf<Element>;
       let sources: string = "";
-      if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
-        resourceCount = document.querySelectorAll('[id^="input-resource"]');
+      if (document.querySelectorAll('[id^="update-input-resource"]').length !== 0) {
+        resourceCount = document.querySelectorAll('[id^="update-input-resource"]');
         for (let i = 0; i < resourceCount.length; i++) {
           // Checks if the array consists of only 1 element or if i is in the last position, in both cases the last element of the array would be blank space,
           // so it avoids concatenating it
@@ -108,6 +108,7 @@ function TalkUpdate(props: Props) {
 
 
       let talkToSave: ITalk = {
+        id: state.talk.id,
         title: (document.getElementById("talk-update-input-title") as HTMLInputElement).value,
         description: (document.getElementById("talk-update-input-description") as HTMLInputElement).value,
         author: chosenAuthor,
@@ -118,7 +119,7 @@ function TalkUpdate(props: Props) {
         timezoneInfo: timezoneInfo,
       };
       await updateTalk(talkToSave);
-      alert("Talk created successfully!");
+      alert("Talk updated successfully!");
       navigate("/");     
     }
 
