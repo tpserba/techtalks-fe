@@ -114,10 +114,10 @@ function TalkList(props: Props) {
 
     }
 
-    const handleMorePages= (event: React.MouseEvent<HTMLParagraphElement>) => {
+    const handleMorePages = (event: React.MouseEvent<HTMLParagraphElement>) => {
         let target = event.target as HTMLParagraphElement;
         console.log(target.innerHTML)
-        setCurrentPage(currentPage+5);
+        setCurrentPage(currentPage + 5);
         selectTalks(currentPage, 5);
 
     }
@@ -159,7 +159,7 @@ function TalkList(props: Props) {
             </div>
             <hr />
             <div id="talk-list-main">
-                <p className="talk-list-page-btn-main" onClick={() => handleBackPage()}>&lt; Previous Talk</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleBackPage()}>&lt; Previous Talks</p>
                 <div id="card-list">
                     {authors.length > 0 ?
                         authors.map((item) => {
@@ -181,7 +181,7 @@ function TalkList(props: Props) {
                         })
                     }
                 </div>
-                <p className="talk-list-page-btn-main">Next talk &gt;</p>
+                <p className="talk-list-page-btn-main">Next talks &gt;</p>
 
             </div>
 
@@ -189,29 +189,32 @@ function TalkList(props: Props) {
                 <p className="talk-list-page-number-btn-bottom">&lt;</p>
                 {Array.from(Array(paginationInfo.totalPages).keys()).map((item, index) => {
                     let pageNumber = index;
-                    if(paginationInfo.totalPages! > 5){
+                    if (paginationInfo.totalPages! > 5) {
                         pageNumber = currentPage;
-                        if(index < currentPage + 4 && (index+currentPage < paginationInfo.totalPages!)){
-                            return (
-                                <p className="talk-list-page-number-btn-bottom" 
-                                onClick={(event) => handlePageSelect(event)}>{
-                                     index === 0 ? 
-                                     0
-                                    : 
-                                    (index+currentPage)-1
-                                    }
+                        if (index < currentPage + 5 && (index + currentPage <= paginationInfo.totalPages!)) {
+                           
+                                return (
+                                    <p className="talk-list-page-number-btn-bottom"
+                                        onClick={(event) => handlePageSelect(event)}>
+                                            {
+                                            currentPage < 1  ? 
+                                            (index)
+                                            :                                                                                              
+                                             (index+ currentPage) -1
+                                        }
                                     </p>
-                            )  
+                                )
+                            
+
+
                         }
-                        
-                       
-                    } else if(paginationInfo.totalPages !== undefined) {
+                    } else if (paginationInfo.totalPages !== undefined) {
                         console.log("test")
                         return (
-                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{pageNumber}</p>
-                        )  
+                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{index-1}{index}</p>
+                        )
                     }
-                                                        
+
                 })}
                 <p className="talk-list-page-number-btn-bottom">&gt;</p>
             </div>
