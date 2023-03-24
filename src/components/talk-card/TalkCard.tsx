@@ -49,9 +49,8 @@ function TalkCard(props: Props, state: State) {
    
         <h2><b><u>{props.type === "talk" ? props.talk?.title : props.talkCard?.title}</u></b></h2>
         <p>{props.type === "talk" ? props.talk?.description : props.talkCard?.description}</p>
-        <p>{props.type === "card" ? format(new Date(dateStorage), "do MMMM Y hh:mm") : props.talk?.talkDate?.toISOString()}</p>
-        <p><u><b>Author</b>: {props.type === "talk" ? props.talk?.author?.authorName : props.talkCard?.author?.authorName}</u></p>
-      
+        <p>{props.type === "card" ? format(new Date(dateStorage), "do MMMM Y hh:mm") : format(new Date(dateStorage), "do MMMM Y hh:mm")}</p>
+        <p><u><b>Author</b>: {props.type === "talk" ? props.talk?.author?.authorName : props.talkCard?.author?.authorName}</u></p>      
       </div>
     </div>
   );

@@ -19,18 +19,40 @@ type Props = {
 interface Params {
     "data"?: string
 }
+
+interface PaginationInfo {
+    content?: ITalk[],
+    empty?: boolean,
+    first?: boolean,
+    last?: boolean,
+    number?: number,
+    numberOfElements?: number,
+    pageable?: {
+
+    },
+    size?: number,
+    sort?: {
+        empty?: boolean,
+        unsorted?: boolean,
+        sorted?: boolean
+    },
+    totalElements?: number,
+    totalPages?: number
+}
+
 function TalkList(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [authors, setAuthors] = useState<IAuthor[]>([]);
     const [author, setAuthor] = useState<IAuthor>({});
     const [talk, setTalk] = useState<ITalk>({});
-    const [showTalk, setShowTalk] = useState(false)
+    const [showTalk, setShowTalk] = useState(false);
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const navigate = useNavigate();
     const { state } = useLocation();
     const [isHandleAuthorClicked, setIsHandleAuthorClicked] = useState<boolean>(false);
     const [isHandleTalkClicked, setIsHandleTalkClicked] = useState<boolean>(false);
     const [isSearchDone, setIsSearchDone] = useState<boolean>(false);
-
+    const [paginationInfo, setPaginationinfo] = useState<PaginationInfo>({});
 
     const search = async (searchParams: string) => {
         if (hasContent(searchParams)) {
@@ -42,16 +64,18 @@ function TalkList(props: Props) {
                 }
             }
         } else {
-            selectTalks();
+            selectTalks(0, 5);
         }
 
 
     }
 
-    const selectTalks = async () => {
+    const selectTalks = async (page: number, size: number) => {
         //setTalks(await getTalks());
-        let response = await getTalksPageable(0, 5);
+        let response = await getTalksPageable(page, size);
         setTalks(response.content);
+        setPaginationinfo(response);
+        console.log(response);
 
     }
     // If user doesn't input anything on search bar
@@ -62,7 +86,6 @@ function TalkList(props: Props) {
         setTalks(await searchTalksByAuthor(talk.author?.id!));
         setTalk(await getFullTalk(talk.id));
         setAuthor(talk.author!);
-
         setIsHandleTalkClicked(true);
 
     }
@@ -72,6 +95,31 @@ function TalkList(props: Props) {
         setTalks(await searchTalksByAuthor(authorItem.id!));
 
         setIsHandleAuthorClicked(true);
+    }
+
+
+    const handleBackPage = () => {
+        if (paginationInfo !== undefined) {
+            console.log(paginationInfo.totalPages);
+        }
+    }
+
+    const handlePageSelect = async (event: React.MouseEvent<HTMLParagraphElement>) => {
+        let target = event.target as HTMLParagraphElement;
+        console.log(target.innerHTML)
+        console.log("current page");
+        console.log(currentPage)
+        setCurrentPage(parseInt(target.innerHTML));
+        selectTalks(parseInt(target.innerHTML), 5);
+
+    }
+
+    const handleMorePages= (event: React.MouseEvent<HTMLParagraphElement>) => {
+        let target = event.target as HTMLParagraphElement;
+        console.log(target.innerHTML)
+        setCurrentPage(currentPage+5);
+        selectTalks(currentPage, 5);
+
     }
     useEffect(() => {
         if (!isSearchDone) {
@@ -111,7 +159,7 @@ function TalkList(props: Props) {
             </div>
             <hr />
             <div id="talk-list-main">
-                <p className="talk-list-page-btn">&lt;</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleBackPage()}>&lt; Previous Talk</p>
                 <div id="card-list">
                     {authors.length > 0 ?
                         authors.map((item) => {
@@ -126,23 +174,51 @@ function TalkList(props: Props) {
                         talks.map((item) => {
                             return (
                                 <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
-                                    <TalkCard talkCard={item} />
+                                    <TalkCard talk={item} type="talk" />
                                     <br />
                                 </div>
                             )
                         })
                     }
                 </div>
-                <p className="talk-list-page-btn">&gt;</p>
-                
+                <p className="talk-list-page-btn-main">Next talk &gt;</p>
+
             </div>
+
             <div id="talk-list-main-bottom">
-            <p>1, 2, 3, 4, 5...</p>
+                <p className="talk-list-page-number-btn-bottom">&lt;</p>
+                {Array.from(Array(paginationInfo.totalPages).keys()).map((item, index) => {
+                    let pageNumber = index;
+                    if(paginationInfo.totalPages! > 5){
+                        pageNumber = currentPage;
+                        if(index < currentPage + 4 && (index+currentPage < paginationInfo.totalPages!)){
+                            return (
+                                <p className="talk-list-page-number-btn-bottom" 
+                                onClick={(event) => handlePageSelect(event)}>{
+                                     index === 0 ? 
+                                     0
+                                    : 
+                                    (index+currentPage)-1
+                                    }
+                                    </p>
+                            )  
+                        }
+                        
+                       
+                    } else if(paginationInfo.totalPages !== undefined) {
+                        console.log("test")
+                        return (
+                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{pageNumber}</p>
+                        )  
+                    }
+                                                        
+                })}
+                <p className="talk-list-page-number-btn-bottom">&gt;</p>
             </div>
-            
+
             <hr />
             <footer id="talk-list-footer">
-           
+
             </footer>
         </div>
 

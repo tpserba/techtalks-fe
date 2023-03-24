@@ -53,18 +53,18 @@ function UserProfile(props: Props) {
         setTalks(await searchTalksByAuthor(talk.author?.id!));
         setTalk(await getFullTalk(talk.id));
         setAuthor(talk.author!);
-        
+
         setIsHandleTalkClicked(true);
 
     }
 
     useEffect(() => {
         //search(state.author.id);
-       
-       setAuthor(state.author);
+
+        setAuthor(state.author);
         setTalks(state.talks);
         if (isHandleTalkClicked) {
-          
+
             navigate("/talk/" + talk.id, {
                 state:
                 {
@@ -78,31 +78,35 @@ function UserProfile(props: Props) {
 
     return (
         <>
-         <div id="user-profile-list-header">
+            <div id="user-profile-list-header">
                 <Header />
-                <div id="ham-menu-header">
+                <div id="user-profile-ham-menu-header">
                     <HamburgerMenu />
                 </div>
             </div>
-        <div id="user-profile-component">
-           
-            <hr />            
-            {state.author.authorName}
-            <br />
-            {state.author.email}
-            <br />
-            {state.author.linkedin}
-            <br />
-            <h1>Talks from {state.author.authorName}</h1>
-            {
-                talks.map((item) => {
-                    return (
-                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>                            
-                            <TalkCard talk={item} type={"talk"} />
-                        </div>
-                    )
-                })
-            }
+            <div id="user-profile-component">
+            <div>
+          <hr />
+        </div>
+                
+                {state.author.authorName}
+                <br />
+                {state.author.email}
+                <br />
+                {state.author.linkedin}
+                <br />
+                <h1>Talks from {state.author.authorName}</h1>
+                <div id="user-profile-main">
+                    {
+                        talks.map((item) => {
+                            return (
+                                <div id="user-profile-talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
+                                    <TalkCard talk={item} type="talk" />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
         </>
     );
