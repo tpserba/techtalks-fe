@@ -10,7 +10,7 @@ import Talk from '../talk/Talk';
 import { hasContent } from '../../utils/utils';
 import { IAuthor } from '../../interface/IAuthor';
 import AuthorCard from '../author-card/AuthorCard';
-import { searchByTitle, searchByAuthor, getTalks, searchTalksByAuthor, getFullTalk } from '../../Apis';
+import { searchByTitle, searchByAuthor, getTalks, searchTalksByAuthor, getFullTalk, getTalksPageable } from '../../Apis';
 
 type Props = {
     talks: ITalk[],
@@ -49,7 +49,9 @@ function TalkList(props: Props) {
     }
 
     const selectTalks = async () => {
-        setTalks(await getTalks());
+        //setTalks(await getTalks());
+        let response = await getTalksPageable(0, 5);
+        setTalks(response.content);
 
     }
     // If user doesn't input anything on search bar
@@ -99,7 +101,8 @@ function TalkList(props: Props) {
     }, [talks, talk]);
 
     return (
-        <>
+
+        <div id="talk-list-window">
             <div id="talk-list-header">
                 <Header />
                 <div id="ham-menu-header">
@@ -107,26 +110,42 @@ function TalkList(props: Props) {
                 </div>
             </div>
             <hr />
-            {authors.length > 0 ?
-                authors.map((item) => {
-                    return (
-                        <div id="talk-card" key={item.id} onClick={(event) => handleAuthorOnClick(event, item, false)}>
-                            <AuthorCard authorItem={item} talks={talks} />
-                            <br />
-                        </div>
-                    )
-                })
-                :
-                talks.map((item) => {
-                    return (
-                        <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
-                            <TalkCard talkCard={item} />
-                            <br />
-                        </div>
-                    )
-                })
-            }
-        </>
+            <div id="talk-list-main">
+                <p className="talk-list-page-btn">&lt;</p>
+                <div id="card-list">
+                    {authors.length > 0 ?
+                        authors.map((item) => {
+                            return (
+                                <div id="talk-card" key={item.id} onClick={(event) => handleAuthorOnClick(event, item, false)}>
+                                    <AuthorCard authorItem={item} talks={talks} />
+                                    <br />
+                                </div>
+                            )
+                        })
+                        :
+                        talks.map((item) => {
+                            return (
+                                <div id="talk-card" key={item.id} onClick={(event) => handleOnClick(event, item, true)}>
+                                    <TalkCard talkCard={item} />
+                                    <br />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <p className="talk-list-page-btn">&gt;</p>
+                
+            </div>
+            <div id="talk-list-main-bottom">
+            <p>1, 2, 3, 4, 5...</p>
+            </div>
+            
+            <hr />
+            <footer id="talk-list-footer">
+           
+            </footer>
+        </div>
+
     );
 
 }

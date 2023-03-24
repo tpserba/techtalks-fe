@@ -1,34 +1,49 @@
-/*
-body {
-  display: flex;
-    flex-direction: column;
-    text-align: center;            
-    color:var(--font-color-primary);
+#talk-list-window {}
+
+#card-list {
+  width: 50%;
 }
-*/
+
+#talk-list-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-content: space-around;
+}
 
 #talk-list-header {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin:auto;
-  flex-grow: 1;
+  margin: auto;
   line-height: 0.2em;
 }
 
-#ham-menu-header {  
- margin-left: auto;
+#ham-menu-header {
+  margin-left: auto;
+}
+
+
+#talk-list-main-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.talk-list-page-btn {
+  
+  font-size:5em;
+  background-color: transparent;
+  color: var(--neon);
+  
 }
 
 #home-button {
   background: transparent;
-  color:var(--font-color-primary);
+  color: var(--font-color-primary);
   font-size: 2rem;
   border: 0ch;
   cursor: pointer;
 }
 
-#talk-card {  
-
-}
-
+#talk-card {}

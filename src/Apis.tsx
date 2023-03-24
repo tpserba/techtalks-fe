@@ -68,6 +68,17 @@ export async function getTalks() {
     });
     return await response.json();
   };
+
+  export async function getTalksPageable(page :number, size: number) {
+    // Can't get env vars to work...
+    let response = await fetch(BASE_TALKS_LIST_URL + "s-pageable?page=" + page + "&size=" + size, {
+      "method": 'GET',
+      "headers": {
+        "Content-Type": 'application/json'
+      }
+    });
+    return await response.json();
+  };
   
   
   
