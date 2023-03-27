@@ -238,12 +238,22 @@ function TalkList(props: Props) {
     }
 
 
-    const handlePageInput = (keypPressed: React.KeyboardEvent<HTMLInputElement> ) =>{
+    const handlePageInput = (keypPressed: React.KeyboardEvent<HTMLInputElement>) => {
         let target = keypPressed.target as HTMLInputElement;
         console.log("target value" + keypPressed.key)
-        if(keypPressed.key === "Enter"){
-            setCurrentPage(parseInt(target.value));
-            selectTalks(parseInt(target.value), 5);
+        if (keypPressed.key === "Enter") {
+            if (parseInt(target.value) > paginationInfo.totalPages!) {
+                setCurrentPage(paginationInfo.totalPages! - 1);
+                selectTalks(paginationInfo.totalPages!, 5);
+            } else if (parseInt(target.value) < 0) {
+                setCurrentPage(0);
+                selectTalks(0, 5);
+
+            } else {
+                setCurrentPage(parseInt(target.value));
+                selectTalks(parseInt(target.value), 5);
+            }
+
         }
 
     }
@@ -295,7 +305,7 @@ function TalkList(props: Props) {
                         })}
                     </div>
                     <div >
-                        Page <input type="number" className='talk-list-page-input' onKeyDown={(event)=>handlePageInput(event)}/>
+                        Page <input type="number" className='talk-list-page-input' onKeyDown={(event) => handlePageInput(event)} />
                     </div>
                 </div>
                 <p className="talk-list-page-number-btn-bottom" onClick={() => { handleNextPageClick() }}>&gt;</p>
