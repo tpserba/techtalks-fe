@@ -142,6 +142,7 @@ function TalkList(props: Props) {
 
     const calculatePagesToShow = () => {
         let showSiblings = false;
+        let isEndSelected = false;
         let isLastSelected = false;
         let arrToShow = []
         if (currentPage >= 3) {
@@ -149,29 +150,75 @@ function TalkList(props: Props) {
         }
         if (currentPage === paginationInfo.totalPages) {
             showSiblings = false;
+            isEndSelected = true;
+        }
+
+        if(currentPage >= paginationInfo.totalPages!-1 && currentPage < paginationInfo.totalPages!){
+            showSiblings = false;
+            isEndSelected = true;
+        }
+       
+        if(currentPage === paginationInfo.totalPages){
+            showSiblings = false;
+            isEndSelected = false;
             isLastSelected = true;
         }
-        if (!showSiblings) {
+        if (!showSiblings && !isEndSelected && !isLastSelected) {
+            console.log("!show siblings")
             for (let i = 0; i < currentPage + 3; i++) {
-                arrToShow.push(
-                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
-                );
-
+                if(currentPage === i){
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                    );
+                }else {                    
+                        arrToShow.push(
+                            <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                        );                                      
+                }               
             }
-        } else {
+        } else if(!isEndSelected && !isLastSelected){
+            console.log("!isEnd selected and !isLastSelected")
             for (let i = currentPage - 2; i < currentPage + 3; i++) {
-                arrToShow.push(
-                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
-                );
-
+                if(currentPage === i){
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                    );
+                } else{
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                    );
+                }              
             }
         }
 
-        if (isLastSelected) {
-            for (let i = currentPage - 3; i < currentPage; i++) {
-                arrToShow.push(
-                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
-                );
+        if (isEndSelected && !isLastSelected) {
+            
+            for (let i = currentPage - 2; i < currentPage + 2; i++) {
+                if(currentPage === i) {
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                    );
+                } else{
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                    );
+                }
+               
+            }
+        }
+
+        if(isLastSelected){
+            for (let i = currentPage - 2; i < currentPage; i++) {
+                if(currentPage === i) {
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                    );
+                } else{
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                    );
+                }
+               
             }
         }
 
