@@ -182,7 +182,6 @@ function TalkList(props: Props) {
                     }
                 </div>
                 <p className="talk-list-page-btn-main">Next talks &gt;</p>
-
             </div>
 
             <div id="talk-list-main-bottom">
@@ -191,37 +190,30 @@ function TalkList(props: Props) {
                     let pageNumber = index;
                     if (paginationInfo.totalPages! > 5) {
                         pageNumber = currentPage;
-                        if (index < currentPage + 5 && (index + currentPage <= paginationInfo.totalPages!)) {
-                           
-                                return (
-                                    <p className="talk-list-page-number-btn-bottom"
-                                        onClick={(event) => handlePageSelect(event)}>
-                                            {
-                                            currentPage < 1  ? 
+                        if (index <  5 && (index + currentPage <= paginationInfo.totalPages!)) {
+                            return (
+                                <p className="talk-list-page-number-btn-bottom"
+                                    onClick={(event) => handlePageSelect(event)}>
+                                    {
+                                        currentPage < 1 ?
                                             (index)
-                                            :                                                                                              
-                                             (index+ currentPage) -1
-                                        }
-                                    </p>
-                                )
-                            
-
-
+                                            :
+                                            (index + currentPage) - 1
+                                    }
+                                </p>
+                            )
                         }
                     } else if (paginationInfo.totalPages !== undefined) {
                         console.log("test")
                         return (
-                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{index-1}{index}</p>
+                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{index - 1}{index}</p>
                         )
                     }
-
                 })}
                 <p className="talk-list-page-number-btn-bottom">&gt;</p>
             </div>
-
             <hr />
             <footer id="talk-list-footer">
-
             </footer>
         </div>
 

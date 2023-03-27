@@ -22,7 +22,7 @@ interface Params {
 }
 
 function Talk(props: Props) {
-  const [urlsArray, setUrlsArray] = useState<string[]>([]);  
+  const [urlsArray, setUrlsArray] = useState<string[]>([]);
   const { state } = useLocation();
   const navigate = useNavigate();
   let regex = /http/;
@@ -53,7 +53,11 @@ function Talk(props: Props) {
 
   const onHandleEditClick = async () => {
     let authorsArr = await getAuthors();
-    let resourcesArr = state.talk.resources.split(" ");   
+    let resourcesArr = [];
+    if (hasContent(state.talk.resources)) {
+      resourcesArr = state.talk.resources.split(" ");
+    }
+
     navigate("/talk-update/" + state.talk.id,
       {
         state: {
@@ -62,7 +66,7 @@ function Talk(props: Props) {
           talks: state.talks,
           talk: state.talk,
           resources: resourcesArr,
-          
+
         }
       })
   }
