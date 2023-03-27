@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Link, Route, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './TalkList.scss'
 import '../../images/img_avatar.png';
 import HamburgerMenu from '../hamburger-menu/HamburgerMenu';
 import Header from '../header/Header';
 import TalkCard from '../talk-card/TalkCard';
 import { ITalk } from '../../interface/ITalk';
-import Talk from '../talk/Talk';
 import { hasContent } from '../../utils/utils';
 import { IAuthor } from '../../interface/IAuthor';
 import AuthorCard from '../author-card/AuthorCard';
-import { searchByTitle, searchByAuthor, getTalks, searchTalksByAuthor, getFullTalk, getTalksPageable } from '../../Apis';
+import { searchByTitle, searchByAuthor, searchTalksByAuthor, getFullTalk, getTalksPageable } from '../../Apis';
+import { IPaginationInfo } from '../../interface/IPaginationInfo';
 
 type Props = {
     talks: ITalk[],
@@ -20,25 +20,7 @@ interface Params {
     "data"?: string
 }
 
-interface PaginationInfo {
-    content?: ITalk[],
-    empty?: boolean,
-    first?: boolean,
-    last?: boolean,
-    number?: number,
-    numberOfElements?: number,
-    pageable?: {
 
-    },
-    size?: number,
-    sort?: {
-        empty?: boolean,
-        unsorted?: boolean,
-        sorted?: boolean
-    },
-    totalElements?: number,
-    totalPages?: number
-}
 
 function TalkList(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
@@ -52,7 +34,7 @@ function TalkList(props: Props) {
     const [isHandleAuthorClicked, setIsHandleAuthorClicked] = useState<boolean>(false);
     const [isHandleTalkClicked, setIsHandleTalkClicked] = useState<boolean>(false);
     const [isSearchDone, setIsSearchDone] = useState<boolean>(false);
-    const [paginationInfo, setPaginationinfo] = useState<PaginationInfo>({});
+    const [paginationInfo, setPaginationinfo] = useState<IPaginationInfo>({});
 
     const search = async (searchParams: string) => {
         if (hasContent(searchParams)) {
@@ -148,6 +130,44 @@ function TalkList(props: Props) {
         }
     }, [talks, talk]);
 
+    const calculatePagesToShow = () => {
+        let showSiblings = false;
+        let isLastSelected = false;
+        let arrToShow = []
+        if (currentPage >= 3) {
+            showSiblings = true;
+        }
+        if (currentPage === paginationInfo.totalPages) {
+            showSiblings = false;
+            isLastSelected = true;
+        }
+        if (!showSiblings) {
+            for (let i = 0; i < currentPage + 3; i++) {
+                arrToShow.push(
+                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                );
+
+            }
+        } else {
+            for (let i = currentPage - 2; i < currentPage + 3; i++) {
+                arrToShow.push(
+                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                );
+
+            }
+        }
+
+        if (isLastSelected) {
+            for (let i = currentPage - 3; i < currentPage; i++) {
+                arrToShow.push(
+                    <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                );
+            }
+        }
+
+        return arrToShow;
+    }
+    
     return (
 
         <div id="talk-list-window">
@@ -186,30 +206,13 @@ function TalkList(props: Props) {
 
             <div id="talk-list-main-bottom">
                 <p className="talk-list-page-number-btn-bottom">&lt;</p>
-                {Array.from(Array(paginationInfo.totalPages).keys()).map((item, index) => {
-                    let pageNumber = index;
-                    if (paginationInfo.totalPages! > 5) {
-                        pageNumber = currentPage;
-                        if (index <  5 && (index + currentPage <= paginationInfo.totalPages!)) {
-                            return (
-                                <p className="talk-list-page-number-btn-bottom"
-                                    onClick={(event) => handlePageSelect(event)}>
-                                    {
-                                        currentPage < 1 ?
-                                            (index)
-                                            :
-                                            (index + currentPage) - 1
-                                    }
-                                </p>
-                            )
-                        }
-                    } else if (paginationInfo.totalPages !== undefined) {
-                        console.log("test")
+                <div className="talk-list-page-number-btn-bottom">
+                    {calculatePagesToShow().map((item, index) => {
                         return (
-                            <p className="talk-list-page-number-btn-bottom" onClick={(event) => handlePageSelect(event)}>{index - 1}{index}</p>
+                            item
                         )
-                    }
-                })}
+                    })}
+                </div>
                 <p className="talk-list-page-number-btn-bottom">&gt;</p>
             </div>
             <hr />
