@@ -225,6 +225,15 @@ function TalkList(props: Props) {
         return arrToShow;
     }
 
+const onFirstPageClickHandle = () => {
+    setCurrentPage(0);
+    selectTalks(0, 5);
+}
+const onLastPageClickHandle = () => {
+    setCurrentPage(paginationInfo.totalPages!);
+    selectTalks(paginationInfo.totalPages!, 5);
+}
+
     return (
 
         <div id="talk-list-window">
@@ -262,6 +271,7 @@ function TalkList(props: Props) {
             </div>
 
             <div id="talk-list-main-bottom">
+            <p className="talk-list-page-number-btn-bottom go-first" onClick={()=> {onFirstPageClickHandle()}}>&lt;&lt;</p>
                 <p className="talk-list-page-number-btn-bottom">&lt;</p>
                 <div className="talk-list-page-number-btn-bottom">
                     {calculatePagesToShow().map((item, index) => {
@@ -271,6 +281,7 @@ function TalkList(props: Props) {
                     })}
                 </div>
                 <p className="talk-list-page-number-btn-bottom">&gt;</p>
+                <p className="talk-list-page-number-btn-bottom go-last" onClick={()=>{onLastPageClickHandle()}}>&gt;&gt;</p>
             </div>
             <hr />
             <footer id="talk-list-footer">
