@@ -125,14 +125,14 @@ function TalkList(props: Props) {
         }
     }, [talks, talk]);
 
-    const handleNextTalksClick = () => {
+    const handleNextPageClick = () => {
         if (currentPage < paginationInfo.totalPages!) {
             setCurrentPage(currentPage + 1);
             selectTalks(currentPage + 1, 5);
         }
 
     }
-    const handleBackTalksClick = () => {
+    const handleBackPageClick = () => {
         if (currentPage > 0) {
             setCurrentPage(currentPage - 1);
             selectTalks(currentPage - 1, 5);
@@ -153,12 +153,13 @@ function TalkList(props: Props) {
             isEndSelected = true;
         }
 
-        if(currentPage >= paginationInfo.totalPages!-1 && currentPage < paginationInfo.totalPages!){
+        if (currentPage >= paginationInfo.totalPages! - 2 && currentPage < paginationInfo.totalPages!) {
             showSiblings = false;
+            isLastSelected = false;
             isEndSelected = true;
         }
-       
-        if(currentPage === paginationInfo.totalPages){
+
+        if (currentPage === paginationInfo.totalPages!-1) {            
             showSiblings = false;
             isEndSelected = false;
             isLastSelected = true;
@@ -166,73 +167,75 @@ function TalkList(props: Props) {
         if (!showSiblings && !isEndSelected && !isLastSelected) {
             console.log("!show siblings")
             for (let i = 0; i < currentPage + 3; i++) {
-                if(currentPage === i){
+                if (currentPage === i) {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
                     );
-                }else {                    
-                        arrToShow.push(
-                            <p onClick={(event) => handlePageSelect(event)}>{i}</p>
-                        );                                      
-                }               
-            }
-        } else if(!isEndSelected && !isLastSelected){
-            console.log("!isEnd selected and !isLastSelected")
-            for (let i = currentPage - 2; i < currentPage + 3; i++) {
-                if(currentPage === i){
-                    arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
-                    );
-                } else{
+                } else {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}>{i}</p>
                     );
-                }              
+                }
+            }
+        } else if (showSiblings && !isEndSelected && !isLastSelected) {
+            console.log("!isEnd selected and !isLastSelected")
+            for (let i = currentPage - 2; i < currentPage + 3; i++) {
+                if (currentPage === i) {
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                    );
+                } else {
+                    arrToShow.push(
+                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                    );
+                }
             }
         }
 
         if (isEndSelected && !isLastSelected) {
-            
+            console.log(paginationInfo.totalPages)
+            console.log(isLastSelected)
             for (let i = currentPage - 2; i < currentPage + 2; i++) {
-                if(currentPage === i) {
+                if (currentPage === i) {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
                     );
-                } else{
+                } else {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}>{i}</p>
                     );
                 }
-               
+
             }
         }
 
-        if(isLastSelected){
+        if (isLastSelected) {
+            console.log("test")
             for (let i = currentPage - 2; i < currentPage; i++) {
-                if(currentPage === i) {
+                if (currentPage === i) {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
                     );
-                } else{
+                } else {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)}>{i}</p>
                     );
                 }
-               
+
             }
         }
 
         return arrToShow;
     }
 
-const onFirstPageClickHandle = () => {
-    setCurrentPage(0);
-    selectTalks(0, 5);
-}
-const onLastPageClickHandle = () => {
-    setCurrentPage(paginationInfo.totalPages!);
-    selectTalks(paginationInfo.totalPages!, 5);
-}
+    const onFirstPageClickHandle = () => {
+        setCurrentPage(0);
+        selectTalks(0, 5);
+    }
+    const onLastPageClickHandle = () => {
+        setCurrentPage(paginationInfo.totalPages!);
+        selectTalks(paginationInfo.totalPages!, 5);
+    }
 
     return (
 
@@ -245,7 +248,7 @@ const onLastPageClickHandle = () => {
             </div>
             <hr />
             <div id="talk-list-main">
-                <p className="talk-list-page-btn-main" onClick={() => handleBackTalksClick()}>&lt; Previous Talks</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleBackPageClick()}>&lt; Previous Talks</p>
                 <div id="card-list">
                     {authors.length > 0 ?
                         authors.map((item) => {
@@ -267,22 +270,28 @@ const onLastPageClickHandle = () => {
                         })
                     }
                 </div>
-                <p className="talk-list-page-btn-main" onClick={() => handleNextTalksClick()}>Next talks &gt;</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleNextPageClick()}>Next talks &gt;</p>
             </div>
 
             <div id="talk-list-main-bottom">
-            <p className="talk-list-page-number-btn-bottom go-first" onClick={()=> {onFirstPageClickHandle()}}>&lt;&lt;</p>
-                <p className="talk-list-page-number-btn-bottom">&lt;</p>
-                <div className="talk-list-page-number-btn-bottom">
-                    {calculatePagesToShow().map((item, index) => {
-                        return (
-                            item
-                        )
-                    })}
+                <p className="talk-list-page-number-btn-bottom go-first" onClick={() => { onFirstPageClickHandle() }}>&lt;&lt;</p>
+                <p className="talk-list-page-number-btn-bottom" onClick={() => { handleBackPageClick() }}>&lt;</p>
+                <div id="pages-nums-and-input">
+                    <div className="talk-list-page-number-btn-bottom">
+                        {calculatePagesToShow().map((item, index) => {
+                            return (
+                                item
+                            )
+                        })}
+                    </div>
+
+                    Page<input type="number" />
                 </div>
-                <p className="talk-list-page-number-btn-bottom">&gt;</p>
-                <p className="talk-list-page-number-btn-bottom go-last" onClick={()=>{onLastPageClickHandle()}}>&gt;&gt;</p>
+                <p className="talk-list-page-number-btn-bottom" onClick={() => { handleNextPageClick() }}>&gt;</p>
+                <p className="talk-list-page-number-btn-bottom go-last" onClick={() => { onLastPageClickHandle() }}>&gt;&gt;</p>
+
             </div>
+
             <hr />
             <footer id="talk-list-footer">
             </footer>
