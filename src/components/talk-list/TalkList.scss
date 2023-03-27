@@ -39,15 +39,36 @@
 }
 
 
-.talk-list-page-number-btn-bottom {  
+.talk-list-page-number-arrow-bottom {  
+ 
+ 
+  
+}
+.talk-list-page-number-btn-bottom{
   display: flex;
   flex-direction: row;
   font-size:2em;
+
   background-color: transparent;
   word-spacing: 10em;
   letter-spacing: 0.3em;
-  cursor: pointer;
   
+} 
+.talk-list-page-number-btns-bottom{
+  display: flex;
+  flex-direction: row;
+  font-size:2em;
+  justify-content: center;
+  background-color: transparent;
+  word-spacing: 10em;
+  letter-spacing: 0.3em;
+ 
+  cursor: pointer;
+} 
+
+.talk-list-page-input{
+  height: 40px;
+  width: 60px;
 }
 
 .go-first{
@@ -62,4 +83,7 @@
 
 }
 
+.test{
+ flex:1;
+}
 #talk-card {}

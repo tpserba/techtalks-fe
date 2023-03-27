@@ -159,7 +159,7 @@ function TalkList(props: Props) {
             isEndSelected = true;
         }
 
-        if (currentPage === paginationInfo.totalPages!-1) {            
+        if (currentPage === paginationInfo.totalPages! - 1) {
             showSiblings = false;
             isEndSelected = false;
             isLastSelected = true;
@@ -169,11 +169,11 @@ function TalkList(props: Props) {
             for (let i = 0; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number"><u>{i}</u></p>
                     );
                 } else {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number">{i}</p>
                     );
                 }
             }
@@ -182,11 +182,11 @@ function TalkList(props: Props) {
             for (let i = currentPage - 2; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number"><u>{i}</u></p>
                     );
                 } else {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number">{i}</p>
                     );
                 }
             }
@@ -198,11 +198,11 @@ function TalkList(props: Props) {
             for (let i = currentPage - 2; i < currentPage + 2; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number"><u>{i}</u></p>
                     );
                 } else {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number">{i}</p>
                     );
                 }
 
@@ -214,11 +214,11 @@ function TalkList(props: Props) {
             for (let i = currentPage - 2; i < currentPage; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}><u>{i}</u></p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number"><u>{i}</u></p>
                     );
                 } else {
                     arrToShow.push(
-                        <p onClick={(event) => handlePageSelect(event)}>{i}</p>
+                        <p onClick={(event) => handlePageSelect(event)} className="page-number">{i}</p>
                     );
                 }
 
@@ -237,6 +237,16 @@ function TalkList(props: Props) {
         selectTalks(paginationInfo.totalPages!, 5);
     }
 
+
+    const handlePageInput = (keypPressed: React.KeyboardEvent<HTMLInputElement> ) =>{
+        let target = keypPressed.target as HTMLInputElement;
+        console.log("target value" + keypPressed.key)
+        if(keypPressed.key === "Enter"){
+            setCurrentPage(parseInt(target.value));
+            selectTalks(parseInt(target.value), 5);
+        }
+
+    }
     return (
 
         <div id="talk-list-window">
@@ -277,15 +287,16 @@ function TalkList(props: Props) {
                 <p className="talk-list-page-number-btn-bottom go-first" onClick={() => { onFirstPageClickHandle() }}>&lt;&lt;</p>
                 <p className="talk-list-page-number-btn-bottom" onClick={() => { handleBackPageClick() }}>&lt;</p>
                 <div id="pages-nums-and-input">
-                    <div className="talk-list-page-number-btn-bottom">
+                    <div className="talk-list-page-number-btns-bottom">
                         {calculatePagesToShow().map((item, index) => {
                             return (
                                 item
                             )
                         })}
                     </div>
-
-                    Page<input type="number" />
+                    <div >
+                        Page <input type="number" className='talk-list-page-input' onKeyDown={(event)=>handlePageInput(event)}/>
+                    </div>
                 </div>
                 <p className="talk-list-page-number-btn-bottom" onClick={() => { handleNextPageClick() }}>&gt;</p>
                 <p className="talk-list-page-number-btn-bottom go-last" onClick={() => { onLastPageClickHandle() }}>&gt;&gt;</p>
