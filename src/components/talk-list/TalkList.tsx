@@ -80,11 +80,6 @@ function TalkList(props: Props) {
     }
 
 
-    const handleBackPage = () => {
-        if (paginationInfo !== undefined) {
-            console.log(paginationInfo.totalPages);
-        }
-    }
 
     const handlePageSelect = async (event: React.MouseEvent<HTMLParagraphElement>) => {
         let target = event.target as HTMLParagraphElement;
@@ -130,6 +125,21 @@ function TalkList(props: Props) {
         }
     }, [talks, talk]);
 
+    const handleNextTalksClick = () => {
+        if (currentPage < paginationInfo.totalPages!) {
+            setCurrentPage(currentPage + 1);
+            selectTalks(currentPage + 1, 5);
+        }
+
+    }
+    const handleBackTalksClick = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+            selectTalks(currentPage - 1, 5);
+        }
+
+    }
+
     const calculatePagesToShow = () => {
         let showSiblings = false;
         let isLastSelected = false;
@@ -167,7 +177,7 @@ function TalkList(props: Props) {
 
         return arrToShow;
     }
-    
+
     return (
 
         <div id="talk-list-window">
@@ -179,7 +189,7 @@ function TalkList(props: Props) {
             </div>
             <hr />
             <div id="talk-list-main">
-                <p className="talk-list-page-btn-main" onClick={() => handleBackPage()}>&lt; Previous Talks</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleBackTalksClick()}>&lt; Previous Talks</p>
                 <div id="card-list">
                     {authors.length > 0 ?
                         authors.map((item) => {
@@ -201,7 +211,7 @@ function TalkList(props: Props) {
                         })
                     }
                 </div>
-                <p className="talk-list-page-btn-main">Next talks &gt;</p>
+                <p className="talk-list-page-btn-main" onClick={() => handleNextTalksClick()}>Next talks &gt;</p>
             </div>
 
             <div id="talk-list-main-bottom">
