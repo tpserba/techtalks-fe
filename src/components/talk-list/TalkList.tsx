@@ -56,9 +56,7 @@ function TalkList(props: Props) {
         //setTalks(await getTalks());
         let response = await getTalksPageable(page, size);
         setTalks(response.content);
-        setPaginationinfo(response);
-        console.log(response);
-
+        setPaginationinfo(response);        
     }
     // If user doesn't input anything on search bar
     // its default behaviour is to search all talks
@@ -82,18 +80,14 @@ function TalkList(props: Props) {
 
 
     const handlePageSelect = async (event: React.MouseEvent<HTMLParagraphElement>) => {
-        let target = event.target as HTMLParagraphElement;
-        console.log(target.innerHTML)
-        console.log("current page");
-        console.log(currentPage)
+        let target = event.target as HTMLParagraphElement;        
         setCurrentPage(parseInt(target.innerHTML));
         selectTalks(parseInt(target.innerHTML), 5);
 
     }
 
     const handleMorePages = (event: React.MouseEvent<HTMLParagraphElement>) => {
-        let target = event.target as HTMLParagraphElement;
-        console.log(target.innerHTML)
+        let target = event.target as HTMLParagraphElement;       
         setCurrentPage(currentPage + 5);
         selectTalks(currentPage, 5);
 
@@ -164,8 +158,7 @@ function TalkList(props: Props) {
             isEndSelected = false;
             isLastSelected = true;
         }
-        if (!showSiblings && !isEndSelected && !isLastSelected) {
-            console.log("!show siblings")
+        if (!showSiblings && !isEndSelected && !isLastSelected) {            
             for (let i = 0; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -177,8 +170,7 @@ function TalkList(props: Props) {
                     );
                 }
             }
-        } else if (showSiblings && !isEndSelected && !isLastSelected) {
-            console.log("!isEnd selected and !isLastSelected")
+        } else if (showSiblings && !isEndSelected && !isLastSelected) {            
             for (let i = currentPage - 2; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -192,9 +184,7 @@ function TalkList(props: Props) {
             }
         }
 
-        if (isEndSelected && !isLastSelected) {
-            console.log(paginationInfo.totalPages)
-            console.log(isLastSelected)
+        if (isEndSelected && !isLastSelected) {           
             for (let i = currentPage - 2; i < currentPage + 2; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -209,9 +199,8 @@ function TalkList(props: Props) {
             }
         }
 
-        if (isLastSelected) {
-            console.log("test")
-            for (let i = currentPage - 2; i < currentPage; i++) {
+        if (isLastSelected) {            
+            for (let i = currentPage - 2; i <= currentPage; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
                         <p onClick={(event) => handlePageSelect(event)} className="page-number"><u>{i}</u></p>
@@ -239,8 +228,7 @@ function TalkList(props: Props) {
 
 
     const handlePageInput = (keypPressed: React.KeyboardEvent<HTMLInputElement>) => {
-        let target = keypPressed.target as HTMLInputElement;
-        console.log("target value" + keypPressed.key)
+        let target = keypPressed.target as HTMLInputElement;        
         if (keypPressed.key === "Enter") {
             if (parseInt(target.value) > paginationInfo.totalPages!) {
                 setCurrentPage(paginationInfo.totalPages! - 1);
