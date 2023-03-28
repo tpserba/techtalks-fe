@@ -60,8 +60,8 @@ function TalkAdd(props: Props) {
       // Makes a list of all the resource input elements and saves the strings in a string variable
       let resourceCount: NodeListOf<Element>;
       let sources: string = "";
-      if (document.querySelectorAll('[id^="input-resource"]').length !== 0) {
-        resourceCount = document.querySelectorAll('[id^="input-resource"]');
+      if (document.querySelectorAll('[id^="add-input-resource"]').length !== 0) {
+        resourceCount = document.querySelectorAll('[id^="add-input-resource"]');
         for (let i = 0; i < resourceCount.length; i++) {
           // Prevents from saving space (empty resource inputs)
           if ((resourceCount[i] as HTMLInputElement).value && (resourceCount.length === 1 || i === resourceCount.length - 1)) {
@@ -166,7 +166,7 @@ function TalkAdd(props: Props) {
 
 
 
-            <label htmlFor="input-resources" className="lbl"><u>Resources</u></label>            
+            <label htmlFor="add-input-resource" className="lbl"><u>Resources</u></label>            
             <div id="resources">
 
               {counter.map((c, index) => {
