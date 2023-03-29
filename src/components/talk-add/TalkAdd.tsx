@@ -134,18 +134,23 @@ function TalkAdd(props: Props) {
             <h1>Create a Talk</h1>
             <label id="talk-add-lbl-title" className="lbl" htmlFor="">Talk Title</label>
             <input id="talk-add-input-title" type="text" name="title"
+              className="add-input"
               placeholder="EDA Architecture, ES6 JS for beginners, etc..."
 
             />
 
 
             <label htmlFor="talk-add-input-description" className="lbl">Description</label>
-            <textarea id="talk-add-input-description" name="talk-add-input-description" rows={4} cols={80} maxLength={255}
+            <textarea id="talk-add-input-description" name="talk-add-input-description"
+              className="add-textarea"
+              rows={4} cols={80} maxLength={255}
             />
 
 
             <label htmlFor="talk-add-input-vid-url" className="talk-add-lbl">Embed video url</label>
-            <textarea id="talk-add-input-vid-url" name="talk-add-input-vid-url" rows={4} cols={80} maxLength={1000}
+            <textarea id="talk-add-input-vid-url" name="talk-add-input-vid-url"
+              className="add-textarea"
+              rows={4} cols={80} maxLength={1000}
             />
 
 
@@ -154,40 +159,43 @@ function TalkAdd(props: Props) {
             <label htmlFor="talk-add-author-input-list" className="lbl">Author</label>
             <datalist id="talk-add-author-input-list" >
               {state.authors.map((authorItem: IAuthor) => {
-                return <option key={"add-option-" + authorItem.id?.toString()}
+                return <option
+                  key={"add-option-" + authorItem.id?.toString()}
                   id={"add-option-" + authorItem.id?.toString()}
                   value={authorItem.authorName + "/" + authorItem.email}
                 />
               })}
 
             </datalist>
-            <input id="talk-add-author-input" autoComplete="on" list="talk-add-author-input-list"
+            <input id="talk-add-author-input" className=" add-input" autoComplete="on" list="talk-add-author-input-list"
             />
 
 
 
-            <label htmlFor="add-input-resource" className="lbl"><u>Resources</u></label>            
+            <label htmlFor="add-input-resource" className="lbl"><u>Resources</u></label>
             <div id="resources">
 
               {counter.map((c, index) => {
                 return (
                   <>
-                    <input id={"add-input-resource" + index} key={index} className="add-input add-input-resources"
+                    <input id={"add-input-resource" + index} 
+                    key={index} className="add-input add-input-resources"
                       type="text" name="resource" placeholder="Link/url"
                     />
                     <br />
                   </>
                 )
               })}
-              <div id="talk-add-add-resource-button">                
+              <div id="talk-add-add-resource-button">
                 <button id="talk-add-input-srcs-btn" type="button"
                   onClick={(event) => addResource(event)}
+                  className="glowing-btn"
                 >Add resource +</button>
                 <label htmlFor="talk-add-add-input-srscs-btn"></label>
               </div>
             </div>
             <img id="upload-img" src={img_avatar} />
-            <button>Upload icon</button>
+            <button className="glowing-btn">Upload icon</button>
             <label htmlFor="start">Date(click calendar icon):</label>
             <input type="datetime-local" id="talk-add-datepicker" name="trip-start"
               min="2000-01-01" max="2100-12-31"

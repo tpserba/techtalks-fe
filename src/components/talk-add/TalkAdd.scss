@@ -31,7 +31,27 @@ margin-bottom: -15px;
 }
 
 .add-input {    
-    background-color: var(--input-bg-primary);
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #d1d5e9;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+.add-textarea {    
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;   
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 40%;
 }
 
 #talk-add-input-title{
@@ -40,7 +60,7 @@ height: 2rem;
 }
 
 #talk-add-input-description{
-background-color: var(--input-bg-primary);
+//background-color: var(--input-bg-primary);
 }
 #resources {
           
@@ -66,7 +86,7 @@ background-color: var(--input-bg-primary);
     justify-content: flex-start;
 }
 
-#talk-add-author-select{
+#talk-add-author-input{
     color:black;
     width: 20rem;
 }
