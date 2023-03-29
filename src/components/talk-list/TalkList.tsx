@@ -278,7 +278,7 @@ function TalkList(props: Props) {
                         })
                     }
                 </div>
-                <p className="talk-list-page-btn-main" onClick={() => handleNextPageClick()}>Next talks &gt;</p>
+                <p className="talk-list-page-btn-main faulty-letter" onClick={() => handleNextPageClick()}>Next talks &gt;</p>
             </div>
 
             <div id="talk-list-main-bottom">
@@ -293,7 +293,7 @@ function TalkList(props: Props) {
                         })}
                     </div>
                     <div id="talk-list-search-page">
-                        <h4 id="talk-list-search-page-input-title">Page</h4> 
+                        <h4 id="talk-list-search-page-input-title">Go to page:</h4> 
                         <input type="number" className='talk-list-page-input' onKeyDown={(event) => handlePageInput(event)} />
                     </div>
                 </div>

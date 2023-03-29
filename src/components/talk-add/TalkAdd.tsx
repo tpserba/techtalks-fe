@@ -189,13 +189,13 @@ function TalkAdd(props: Props) {
               <div id="talk-add-add-resource-button">
                 <button id="talk-add-input-srcs-btn" type="button"
                   onClick={(event) => addResource(event)}
-                  className="glowing-btn"
+                  className="glowing-btn_noflicker"
                 >Add resource +</button>
                 <label htmlFor="talk-add-add-input-srscs-btn"></label>
               </div>
             </div>
             <img id="upload-img" src={img_avatar} />
-            <button className="glowing-btn">Upload icon</button>
+            <button className="glowing-btn_noflicker">Upload icon</button>
             <label htmlFor="start">Date(click calendar icon):</label>
             <input type="datetime-local" id="talk-add-datepicker" name="trip-start"
               min="2000-01-01" max="2100-12-31"

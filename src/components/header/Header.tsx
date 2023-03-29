@@ -13,7 +13,7 @@ navigate("/");
   
   return (
     <>
-     <h1 id="header-main" onClick={goHome}><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
+     <h1 id="header-main" onClick={goHome}><span className='glowing-txt_noflicker'>TE<span className='faulty-letter_delayedflicker'>CH </span>TALKS</span></h1>
     </>
   );
 }

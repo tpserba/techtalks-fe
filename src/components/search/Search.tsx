@@ -91,15 +91,15 @@ function Search(props: Props, state: State) {
       {<div>
 
         <div id='main-content'>
-          <h1 ><span className='glowing-txt'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
+          <h1 ><span className='glowing-txt_delayedflicker'>TE<span className='faulty-letter'>CH </span>TALKS</span></h1>
           <input id='search-bar' placeholder='Search by title, author name, dates, etc...'
             onChange={() => onInputChange()}
             onKeyDown={(event) => handleKeyDown(event)}
             autoFocus={true} />
           <br />
           <div id="buttons">
-            <button className='glowing-btn' onClick={() => handleSearchClick()}><span>S<span >E</span>ARCH</span></button>
-            <button className='glowing-btn' onClick={() => selectRandomTalk()}><span>I'M <span>FEE</span>LING </span>
+            <button className='glowing-btn_noflicker' onClick={() => handleSearchClick()}><span>S<span >E</span>ARCH</span></button>
+            <button className='glowing-btn_delayedflicker' onClick={() => selectRandomTalk()}><span>I'M <span>FEE</span>LING </span>
               <span >LUC<span >KY</span></span>
             </button>
           </div>
