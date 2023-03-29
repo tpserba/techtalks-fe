@@ -56,7 +56,7 @@ function TalkList(props: Props) {
         //setTalks(await getTalks());
         let response = await getTalksPageable(page, size);
         setTalks(response.content);
-        setPaginationinfo(response);        
+        setPaginationinfo(response);
     }
     // If user doesn't input anything on search bar
     // its default behaviour is to search all talks
@@ -80,14 +80,14 @@ function TalkList(props: Props) {
 
 
     const handlePageSelect = async (event: React.MouseEvent<HTMLParagraphElement>) => {
-        let target = event.target as HTMLParagraphElement;        
+        let target = event.target as HTMLParagraphElement;
         setCurrentPage(parseInt(target.innerHTML));
         selectTalks(parseInt(target.innerHTML), 5);
 
     }
 
     const handleMorePages = (event: React.MouseEvent<HTMLParagraphElement>) => {
-        let target = event.target as HTMLParagraphElement;       
+        let target = event.target as HTMLParagraphElement;
         setCurrentPage(currentPage + 5);
         selectTalks(currentPage, 5);
 
@@ -120,7 +120,7 @@ function TalkList(props: Props) {
     }, [talks, talk]);
 
     const handleNextPageClick = () => {
-        if (currentPage < paginationInfo.totalPages!) {
+        if (currentPage < paginationInfo.totalPages! - 1) {
             setCurrentPage(currentPage + 1);
             selectTalks(currentPage + 1, 5);
         }
@@ -158,7 +158,7 @@ function TalkList(props: Props) {
             isEndSelected = false;
             isLastSelected = true;
         }
-        if (!showSiblings && !isEndSelected && !isLastSelected) {            
+        if (!showSiblings && !isEndSelected && !isLastSelected) {
             for (let i = 0; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -170,7 +170,7 @@ function TalkList(props: Props) {
                     );
                 }
             }
-        } else if (showSiblings && !isEndSelected && !isLastSelected) {            
+        } else if (showSiblings && !isEndSelected && !isLastSelected) {
             for (let i = currentPage - 2; i < currentPage + 3; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -184,7 +184,7 @@ function TalkList(props: Props) {
             }
         }
 
-        if (isEndSelected && !isLastSelected) {           
+        if (isEndSelected && !isLastSelected) {
             for (let i = currentPage - 2; i < currentPage + 2; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -199,7 +199,7 @@ function TalkList(props: Props) {
             }
         }
 
-        if (isLastSelected) {            
+        if (isLastSelected) {
             for (let i = currentPage - 2; i <= currentPage; i++) {
                 if (currentPage === i) {
                     arrToShow.push(
@@ -222,15 +222,15 @@ function TalkList(props: Props) {
         selectTalks(0, 5);
     }
     const onLastPageClickHandle = () => {
-        setCurrentPage(paginationInfo.totalPages!);
+        setCurrentPage(paginationInfo.totalPages! - 1);
         selectTalks(paginationInfo.totalPages!, 5);
     }
 
 
     const handlePageInput = (keypPressed: React.KeyboardEvent<HTMLInputElement>) => {
-        let target = keypPressed.target as HTMLInputElement;        
+        let target = keypPressed.target as HTMLInputElement;
         if (keypPressed.key === "Enter") {
-            if (parseInt(target.value) > paginationInfo.totalPages!) {
+            if (parseInt(target.value) > paginationInfo.totalPages! - 1) {
                 setCurrentPage(paginationInfo.totalPages! - 1);
                 selectTalks(paginationInfo.totalPages!, 5);
             } else if (parseInt(target.value) < 0) {
@@ -292,8 +292,9 @@ function TalkList(props: Props) {
                             )
                         })}
                     </div>
-                    <div >
-                        Page <input type="number" className='talk-list-page-input' onKeyDown={(event) => handlePageInput(event)} />
+                    <div id="talk-list-search-page">
+                        <h4 id="talk-list-search-page-input-title">Page</h4> 
+                        <input type="number" className='talk-list-page-input' onKeyDown={(event) => handlePageInput(event)} />
                     </div>
                 </div>
                 <p className="talk-list-page-number-btn-bottom" onClick={() => { handleNextPageClick() }}>&gt;</p>

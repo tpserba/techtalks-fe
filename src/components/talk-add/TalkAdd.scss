@@ -34,12 +34,11 @@ margin-bottom: -15px;
     background-color: #ffffff;
     border-radius: 12px;
     border: 0;
-    box-sizing: border-box;
-    color: #d1d5e9;
+    box-sizing: border-box;    
     font-size: 18px;
     height: 100%;
     outline: 0;
-    padding: 4px 20px 0;
+    
     width: 100%;
 }
 .add-textarea {    
@@ -50,7 +49,7 @@ margin-bottom: -15px;
     font-size: 18px;
     height: 100%;
     outline: 0;
-    padding: 4px 20px 0;
+    
     width: 40%;
 }
 
@@ -89,4 +88,5 @@ height: 2rem;
 #talk-add-author-input{
     color:black;
     width: 20rem;
+    text-align: center;
 }
