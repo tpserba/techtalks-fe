@@ -84,6 +84,7 @@ function Talk(props: Props) {
           <h2 id="talk-title"><b><u>{state.talk.title}</u></b></h2>
           <h3 id="btn-talk-author" onClick={() => handleAuthorClick()} className='faulty-letter'><b>Author</b>: {state.talk.author?.authorName}</h3>
         </div>
+        <p>{state.talk.description}</p>
         <div>
           <hr />
         </div>

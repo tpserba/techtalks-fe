@@ -26,7 +26,7 @@ function TalkCard(props: Props, state: State) {
 
 
   // Star
-  const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>) => {   
+  const handleOnClick = async (event: React.MouseEvent<HTMLDivElement>) => {
   }
   // Checks if the talk has a date
   let dateStorage: Date = (new Date(2000, 1, 1));
@@ -39,6 +39,15 @@ function TalkCard(props: Props, state: State) {
       dateStorage = props.talkCard!.talkDate!;
     }
   }
+  const truncate = (str: string, n: number) => {
+    if (hasContent(str)) {
+      return (str.length > n) ? str.slice(0, n - 1) + '...' : str;
+    }
+    else {
+      return ""
+    }
+
+  };
 
   return (
     <div id="talk-card-main-container" onClick={(event) => handleOnClick(event)}>
@@ -46,11 +55,11 @@ function TalkCard(props: Props, state: State) {
         <img id="talk-card-img_avatar" src={img_avatar} alt="Avatar" />
       </div>
       <div id="talk-card-main">
-   
+
         <h2><b><u>{props.type === "talk" ? props.talk?.title : props.talkCard?.title}</u></b></h2>
-        <p>{props.type === "talk" ? props.talk?.description : props.talkCard?.description}</p>
+        <p>{props.type === "talk" ? truncate(props.talk?.description!, 80) : truncate(props.talkCard?.description!, 80)}</p>
         <p>{props.type === "card" ? format(new Date(dateStorage), "do MMMM Y hh:mm") : format(new Date(dateStorage), "do MMMM Y hh:mm")}</p>
-        <p><u><b>Author</b>: {props.type === "talk" ? props.talk?.author?.authorName : props.talkCard?.author?.authorName}</u></p>      
+        <p><u><b>Author</b>: {props.type === "talk" ? props.talk?.author?.authorName : props.talkCard?.author?.authorName}</u></p>
       </div>
     </div>
   );
