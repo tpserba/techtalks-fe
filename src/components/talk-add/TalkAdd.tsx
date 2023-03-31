@@ -27,11 +27,9 @@ interface Source {
 function TalkAdd(props: Props) {
   // Setup
   const [counter, setCounter] = useState<string[]>([]);
-  const [resourceList, setResourceList] = useState<Source[]>([]);
   const { state } = useLocation();
   const navigate = useNavigate();
-  let talkAddWindow = useRef<HTMLDivElement>(null);
-  const [selectOptions, setSelectOptions] = useState<{ value: string, label: string }[]>();
+  let talkAddWindow = useRef<HTMLDivElement>(null);  
 
   const addResource = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();

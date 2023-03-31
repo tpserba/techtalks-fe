@@ -18,9 +18,7 @@ type State = {
 };
 function TalkCard(props: Props, state: State) {
   // Setup
-  const [talk, setTalk] = useState<ITalk>();
-  const [navLink, setNavLink] = useState<To>("");
-  const navigate = useNavigate();
+ 
 
 
 

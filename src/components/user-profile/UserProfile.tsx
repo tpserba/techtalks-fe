@@ -21,8 +21,7 @@ function UserProfile(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [author, setAuthor] = useState<IAuthor>({});
     const [talk, setTalk] = useState<ITalk>({});
-    const [isHandleTalkClicked, setIsHandleTalkClicked] = useState<boolean>(false);
-    const [showTalk, setShowTalk] = useState(false)
+    const [isHandleTalkClicked, setIsHandleTalkClicked] = useState<boolean>(false);    
     const navigate = useNavigate();
     const { state } = useLocation();
 

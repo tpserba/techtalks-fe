@@ -26,8 +26,7 @@ function TalkList(props: Props) {
     const [talks, setTalks] = useState<ITalk[]>([]);
     const [authors, setAuthors] = useState<IAuthor[]>([]);
     const [author, setAuthor] = useState<IAuthor>({});
-    const [talk, setTalk] = useState<ITalk>({});
-    const [showTalk, setShowTalk] = useState(false);
+    const [talk, setTalk] = useState<ITalk>({});    
     const [currentPage, setCurrentPage] = useState<number>(0);
     const navigate = useNavigate();
     const { state } = useLocation();

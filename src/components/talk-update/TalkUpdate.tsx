@@ -34,10 +34,8 @@ interface State {
 
 }
 function TalkUpdate(props: Props) {
-  // Setup
-  const [justLanded, setJustLanded] = useState<boolean>(false);
-  const [counter, setCounter] = useState<string[]>([]);
-  const [resourceList, setResourceList] = useState<Source[]>([]);
+  // Setup  
+  const [counter, setCounter] = useState<string[]>([]);  
   const { state } = useLocation();
   const navigate = useNavigate();
   let talkAddWindow = useRef<HTMLDivElement>(null);
