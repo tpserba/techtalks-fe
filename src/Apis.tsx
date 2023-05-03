@@ -1,8 +1,8 @@
 import { ITalk } from "./interface/ITalk";
 import { hasContent } from "./utils/utils";
 
-const BASE_TALKS_LIST_URL = 'https://localhost:8443/api/talk';
-const BASE_AUTHOR_URL =  'https://localhost:8443/api';
+const BASE_TALKS_LIST_URL = 'http://localhost:8081/api/talk';
+const BASE_AUTHOR_URL =  'http://localhost:8081/api';
 
 export async function getFullTalk(id: number  |null | undefined) {
     if (hasContent(id)) {
